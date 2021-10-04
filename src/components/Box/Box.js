@@ -8,8 +8,8 @@ export default function Box({ width, height, depth, position, boxColor, isOutLin
   const lineGeometry = new THREE.BoxGeometry(...size);
 
   return (
-    <mesh>
-      <boxGeometry args={size} translate={position} />
+    <mesh position={position}>
+      <boxGeometry args={size} />
       <meshLambertMaterial color={boxColor} />
       {isOutLine && (
         <lineSegments>
