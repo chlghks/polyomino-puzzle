@@ -5,6 +5,7 @@ import Scene from "../Scene/Scene";
 import Camera from "../Camera/Camera";
 import Light from "../Light/Light";
 import Board from "../Board/Board";
+import Arrow from "../Arrow/Arrow";
 import { BLACK } from "../../constants/Colors";
 
 const GameBoard = styled.div`
@@ -35,6 +36,7 @@ export default function Game() {
           depth={10}
           edgeLength={5}
         />
+        <Arrow />
       </Canvas>
     </GameBoard>
   );
