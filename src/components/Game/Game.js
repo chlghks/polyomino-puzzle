@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import * as THREE from "three";
 import { Canvas, useThree } from "@react-three/fiber";
 import styled from "styled-components";
 
@@ -12,8 +14,19 @@ const GameBoard = styled.div`
 
 const CanvasSetting = () => {
   const scene = useThree(state => state.scene);
+  const set = useThree(state => state.set);
 
   scene.background = BLACK;
+
+  useEffect(() => {
+    const [LEFT, RIGHT, TOP, BOTTOM, NEAR, FAR] = [-5, 5, 5, -5, 1, 1000];
+
+    const camera = new THREE.OrthographicCamera(LEFT, RIGHT, TOP, BOTTOM, NEAR, FAR);
+
+    camera.position.set(4, 4, 4);
+
+    set({ camera });
+  }, [set]);
 
   return null;
 };
@@ -21,8 +34,7 @@ const CanvasSetting = () => {
 export default function Game() {
   return (
     <GameBoard>
-      <Canvas
-        camera={{ position: [4, 4, 4] }}>
+      <Canvas>
         <CanvasSetting />
         <Light />
       </Canvas>
