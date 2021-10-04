@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import * as THREE from "three";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import styled from "styled-components";
 
+import Scene from "../Scene/Scene";
+import Camera from "../Camera/Camera";
 import Light from "../Light/Light";
 import Board from "../Board/Board";
 import { BLACK } from "../../constants/Colors";
@@ -13,33 +13,28 @@ const GameBoard = styled.div`
   margin: 0 auto;
 `;
 
-const CanvasSetting = () => {
-  const scene = useThree(state => state.scene);
-  const set = useThree(state => state.set);
-
-  scene.background = BLACK;
-
-  useEffect(() => {
-    const [LEFT, RIGHT, TOP, BOTTOM, NEAR, FAR] = [-50, 50, 50, -50, 0, 1000];
-
-    const camera = new THREE.OrthographicCamera(LEFT, RIGHT, TOP, BOTTOM, NEAR, FAR);
-
-    camera.position.set(50, 40, 50);
-    camera.lookAt(0, 0, 0);
-
-    set({ camera });
-  }, [set]);
-
-  return null;
-};
-
 export default function Game() {
   return (
     <GameBoard>
       <Canvas>
-        <CanvasSetting />
+        <Scene backgroundColor={BLACK} />
+        <Camera
+          left={-50}
+          right={50}
+          top={50}
+          bottom={-50}
+          near={0}
+          far={1000}
+          position={[50, 40, 50]}
+          lookAt={[0, 0, 0]}
+        />
         <Light />
-        <Board width={10} height={2} depth={10} edgeLength={5}/>
+        <Board
+          width={10}
+          height={2}
+          depth={10}
+          edgeLength={5}
+        />
       </Canvas>
     </GameBoard>
   );
