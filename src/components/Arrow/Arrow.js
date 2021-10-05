@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import useStore from "../../Store/useStore";
-import { WHITE } from "../../constants/Colors";
+import { WHITE } from "../../constants/colors";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function Arrow() {

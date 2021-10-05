@@ -6,7 +6,7 @@ import Camera from "../Camera/Camera";
 import Light from "../Light/Light";
 import Board from "../Board/Board";
 import Arrow from "../Arrow/Arrow";
-import { BLACK } from "../../constants/Colors";
+import { BLACK } from "../../constants/colors";
 
 const GameBoard = styled.div`
   width: 600px;

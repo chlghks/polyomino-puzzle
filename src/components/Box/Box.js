@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import PropTypes from "prop-types";
 
-import { BLACK, WHITE } from "../../constants/Colors";
+import { BLACK, WHITE } from "../../constants/colors";
 
 export default function Box({ width, height, depth, position, boxColor, isOutLine, outLineColor }) {
   const size = [width, height, depth];
