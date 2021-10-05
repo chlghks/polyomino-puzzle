@@ -37,7 +37,7 @@ const Block = forwardRef(({ kind, rotation, width, height, depth, boxColor, isOu
   );
 });
 
-Block.prototype = {
+Block.propTypes = {
   kind: PropTypes.string.isRequired,
   rotation: PropTypes.array.isRequired,
   width: PropTypes.number.isRequired,
