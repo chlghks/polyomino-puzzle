@@ -31,6 +31,7 @@ export default function Game() {
         />
         <Light />
         <Board
+          offsetHeight={15}
           width={10}
           height={2}
           depth={10}

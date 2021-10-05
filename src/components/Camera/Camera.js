@@ -4,7 +4,7 @@ import { useThree } from "@react-three/fiber";
 import PropTypes from "prop-types";
 
 export default function Camera({ left, right, top, bottom, near, far, position, lookAt }) {
-  const set = useThree(state => state.set);
+  const set = useThree((state) => state.set);
 
   const camera = useMemo(() => new THREE.OrthographicCamera(left, right, top, bottom, near, far), [left, right, top, bottom, near, far]);
 

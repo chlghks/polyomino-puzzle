@@ -1,12 +1,20 @@
 import * as THREE from "three";
 
+import useStore from "../../Store/useStore";
 import { WHITE } from "../../constants/Colors";
 
 export default function Arrow() {
+  const { turnRight, turnLeft } = useStore((state) => ({
+    turnRight: state.turnRight,
+    turnLeft: state.turnLeft
+  }));
+
   const options = [{
+    handleArrowClick() { turnLeft(); },
     position: [0, 10, 50],
     rotation: [0, Math.PI * 45 / 180, 0],
   }, {
+    handleArrowClick() { turnRight(); },
     position: [50, 10, 0],
     rotation: [0, Math.PI * 225 / 180, 0],
   }];
@@ -28,12 +36,13 @@ export default function Arrow() {
   return (
     <>
       {options.map((option) => {
-        const { position, rotation } = option;
+        const { handleArrowClick, position, rotation } = option;
 
         return (
           <mesh
             key={position.toString()}
             scale={scale}
+            onClick={handleArrowClick}
             position={position}
             rotation={rotation}
           >
