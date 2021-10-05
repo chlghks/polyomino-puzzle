@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import useStore from "../../Store/useStore";
 import { WHITE } from "../../constants/Colors";
+import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function Arrow() {
   const { turnRight, turnLeft } = useStore((state) => ({
@@ -12,11 +13,11 @@ export default function Arrow() {
   const options = [{
     handleArrowClick() { turnLeft(); },
     position: [0, 10, 50],
-    rotation: [0, Math.PI * 45 / 180, 0],
+    rotation: [0, RIGHT_ANGLE / 2, 0],
   }, {
     handleArrowClick() { turnRight(); },
     position: [50, 10, 0],
-    rotation: [0, Math.PI * 225 / 180, 0],
+    rotation: [0, RIGHT_ANGLE * 2.5, 0],
   }];
 
   const scale = [0.3, 0.3, 0.3];

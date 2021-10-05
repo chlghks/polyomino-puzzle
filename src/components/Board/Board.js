@@ -15,23 +15,30 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
 
   useFrame(() => {
     const { rotation } = boxGroup.current;
+    const SPEED = 0.05;
 
-    if (Math.abs(rotation.y - rotatingAmount) < 0.05) {
+    if (Math.abs(rotation.y - rotatingAmount) < SPEED) {
       rotation.y = rotatingAmount;
-    } else if (rotation.y < rotatingAmount) {
-      rotation.y += 0.05;
-    } else if (rotation.y > rotatingAmount) {
-      rotation.y -= 0.05;
+      return;
+    }
+
+    if (rotation.y < rotatingAmount) {
+      rotation.y += SPEED;
+      return;
+    }
+
+    if (rotation.y > rotatingAmount) {
+      rotation.y -= SPEED;
     }
   });
 
   for (let i = 0; i < edgeLength; i++) {
     for (let j = 0; j < edgeLength; j++) {
-      const x = width * i + OFFSET_WIDTH;
-      const y = 0;
-      const z = depth * j + OFFSET_DEPTH;
+      const X = width * i + OFFSET_WIDTH;
+      const Y = 0;
+      const Z = depth * j + OFFSET_DEPTH;
 
-      const position = [x, y, z];
+      const position = [X, Y, Z];
 
       positions.push(position);
     }
