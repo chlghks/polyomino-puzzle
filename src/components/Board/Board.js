@@ -2,8 +2,9 @@ import { useRef } from "react";
 import PropTypes from "prop-types";
 import { useFrame } from "@react-three/fiber";
 
-import Box from "../Box/Box";
 import useStore from "../../Store/useStore";
+import Box from "../Box/Box";
+import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function Board({ offsetHeight, width, height, depth, edgeLength }) {
   const boxGroup = useRef();
@@ -45,7 +46,7 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
   }
 
   return (
-    <group ref={boxGroup} position={[0, offsetHeight, 0]}>
+    <group ref={boxGroup} position={[0, offsetHeight, 0]} rotation={[0, RIGHT_ANGLE / 2, 0]}>
       {positions.map((position) => (
         <Box
           key={position.toString()}

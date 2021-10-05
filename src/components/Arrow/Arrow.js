@@ -12,17 +12,17 @@ export default function Arrow() {
 
   const options = [{
     handleArrowClick() { turnLeft(); },
-    position: [0, 10, 50],
-    rotation: [0, RIGHT_ANGLE / 2, 0],
+    position: [-40, 10, 10],
+    rotation: [0, 0, 0],
   }, {
     handleArrowClick() { turnRight(); },
-    position: [50, 10, 0],
-    rotation: [0, RIGHT_ANGLE * 2.5, 0],
+    position: [40, 10, 10],
+    rotation: [0, RIGHT_ANGLE * 2, 0],
   }];
 
   const scale = [0.3, 0.3, 0.3];
 
-  const x = 5, y = 5;
+  const x = 0, y = 0;
 
   const arrowShape = new THREE.Shape();
 
