@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
-import Block from "../Block/Block";
+import BlockBox from "../BlockBox/BlockBox";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function BlockContainer({ blocks, width, height, depth, boxColor, isOutLine, outLineColor }) {
@@ -92,24 +92,18 @@ export default function BlockContainer({ blocks, width, height, depth, boxColor,
         const { position, kind } = option;
 
         return (
-          <group key={position.toString()}>
-            <mesh position={position}>
-              <lineSegments>
-                <edgesGeometry args={[new THREE.PlaneGeometry(BLOCK_BOX_LENGTH, BLOCK_BOX_LENGTH)]} />
-                <lineBasicMaterial />
-              </lineSegments>
-            </mesh>
-            <Block
-              kind={kind}
-              position={position}
-              rotation={[0, RIGHT_ANGLE / 2, 0]}
-              width={width}
-              height={height}
-              depth={depth}
-              boxColor={boxColor}
-              isOutLine={isOutLine}
-              outLineColor={outLineColor} />
-          </group>
+          <BlockBox
+            key={position.toString()}
+            kind={kind}
+            length={BLOCK_BOX_LENGTH}
+            position={position}
+            rotation={[0, RIGHT_ANGLE / 2, 0]}
+            width={width}
+            height={height}
+            depth={depth}
+            boxColor={boxColor}
+            isOutLine={isOutLine}
+            outLineColor={outLineColor} />
         );
       })}
     </group>
