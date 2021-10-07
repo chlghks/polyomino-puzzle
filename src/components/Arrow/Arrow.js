@@ -1,10 +1,11 @@
 import * as THREE from "three";
+import PropTypes from "prop-types";
 
 import useStore from "../../Store/useStore";
 import { WHITE } from "../../constants/colors";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-export default function Arrow() {
+export default function Arrow({ offsetHeight }) {
   const { turnRight, turnLeft } = useStore((state) => ({
     turnRight: state.turnRight,
     turnLeft: state.turnLeft
@@ -12,11 +13,11 @@ export default function Arrow() {
 
   const options = [{
     handleArrowClick() { turnLeft(); },
-    position: [-40, 10, 10],
+    position: [-50, offsetHeight, 30],
     rotation: [0, 0, 0],
   }, {
     handleArrowClick() { turnRight(); },
-    position: [40, 10, 10],
+    position: [50, offsetHeight, 30],
     rotation: [0, RIGHT_ANGLE * 2, 0],
   }];
 
@@ -57,4 +58,8 @@ export default function Arrow() {
       })}
     </>
   );
+};
+
+Arrow.propTypes = {
+  offsetHeight: PropTypes.number.isRequired,
 };

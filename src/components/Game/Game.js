@@ -7,6 +7,7 @@ import Light from "../Light/Light";
 import Board from "../Board/Board";
 import Arrow from "../Arrow/Arrow";
 import BlockContainer from "../BlockContainer/BlockContainer";
+import { RIGHT_ANGLE } from "../../constants/angles";
 
 import {
   BLACK,
@@ -37,10 +38,10 @@ const mockBlocks = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_O, TETR
 export default function Game() {
   const width = 10;
   const depth = 10;
-  const edgeLength = 5;
+  const edgeLength = 6;
   const boardHeight = 2;
   const blockHeight = 6;
-  const offsetHeight = 15;
+  const offsetHeight = 0;
 
   return (
     <GameBoard>
@@ -53,7 +54,7 @@ export default function Game() {
           bottom={-65}
           near={0}
           far={150}
-          position={[0, 40, 100]}
+          position={[60, 40, 60]}
           lookAt={[0, 0, 0]}
         />
         <Light />
@@ -64,16 +65,18 @@ export default function Game() {
           depth={depth}
           edgeLength={edgeLength}
         />
-        <BlockContainer
-          blocks={mockBlocks}
-          width={width}
-          height={blockHeight}
-          depth={depth}
-          boxColor={WHITE}
-          isOutLine={true}
-          outLineColor={BLACK}
-        />
-        <Arrow />
+        <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
+          <Arrow offsetHeight={offsetHeight} />
+          <BlockContainer
+            blocks={mockBlocks}
+            width={width}
+            height={blockHeight}
+            depth={depth}
+            boxColor={WHITE}
+            isOutLine={true}
+            outLineColor={BLACK}
+          />
+        </object3D>
       </Canvas>
     </GameBoard>
   );
