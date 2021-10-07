@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import Box from "../Box/Box";
+import Cube from "../Cube/Cube";
 
 const blocks = {
   domino: [[0, 0, -5], [0, 0, 5]],
@@ -21,7 +21,7 @@ export default function Block({ kind, position, rotation, width, height, depth, 
   return (
     <group position={position} rotation={rotation}>
       {block.map((position) => (
-        <Box
+        <Cube
           key={position.toString()}
           width={width}
           height={height}

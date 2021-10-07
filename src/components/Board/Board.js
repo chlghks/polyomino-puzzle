@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
-import Box from "../Box/Box";
+import Cube from "../Cube/Cube";
 import SelectedArea from "../SelectedArea/SelectedArea";
 import { RIGHT_ANGLE } from "../../constants/angles";
 import { RED } from "../../constants/colors";
@@ -95,7 +95,7 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
         position={[0, offsetHeight, 0]}
       >
         {positions.map((position) => (
-          <Box
+          <Cube
             key={position.toString()}
             width={width}
             height={height}
