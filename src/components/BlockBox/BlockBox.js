@@ -1,5 +1,4 @@
-import
-* as THREE from "three";
+import * as THREE from "three";
 import PropTypes from "prop-types";
 
 import Block from "../Block/Block";
@@ -23,7 +22,8 @@ export default function BlockBox({ position, length, kind, width, height, depth,
         depth={depth}
         boxColor={boxColor}
         isOutLine={isOutLine}
-        outLineColor={outLineColor} />
+        outLineColor={outLineColor}
+      />
     </group>
   );
 }

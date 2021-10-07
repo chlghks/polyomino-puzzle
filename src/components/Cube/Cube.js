@@ -10,7 +10,7 @@ export default function Box({ width, height, depth, position, boxColor, isOutLin
   return (
     <mesh position={position}>
       <boxGeometry args={size} />
-      <meshLambertMaterial color={boxColor} />
+      <meshLambertMaterial color={boxColor}/>
       {isOutLine && (
         <lineSegments>
           <edgesGeometry args={[lineGeometry]} />

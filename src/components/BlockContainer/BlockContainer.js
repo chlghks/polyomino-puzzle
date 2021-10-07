@@ -103,7 +103,8 @@ export default function BlockContainer({ blocks, width, height, depth, boxColor,
             depth={depth}
             boxColor={boxColor}
             isOutLine={isOutLine}
-            outLineColor={outLineColor} />
+            outLineColor={outLineColor}
+          />
         );
       })}
     </group>
