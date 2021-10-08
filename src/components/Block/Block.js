@@ -15,17 +15,16 @@ const blocks = {
   tetrominoZ: [[0, 0, -5], [-10, 0, -5], [0, 0, 5], [10, 0, 5]],
 };
 
-export default function Block({ kind, position, rotation, width, height, depth, boxColor, isOutLine, outLineColor }) {
-  const block = blocks[kind];
+export default function Block({ type, position, rotation, edgeLength, height, boxColor, isOutLine, outLineColor }) {
+  const block = blocks[type];
 
   return (
     <group position={position} rotation={rotation}>
       {block.map((position) => (
         <Cube
           key={position.toString()}
-          width={width}
+          edgeLength={edgeLength}
           height={height}
-          depth={depth}
           position={position}
           boxColor={boxColor}
           isOutLine={isOutLine}
@@ -37,12 +36,11 @@ export default function Block({ kind, position, rotation, width, height, depth, 
 };
 
 Block.propTypes = {
-  kind: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   position: PropTypes.array.isRequired,
   rotation: PropTypes.array.isRequired,
-  width: PropTypes.number.isRequired,
+  edgeLength: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  depth: PropTypes.number.isRequired,
   boxColor: PropTypes.string.isRequired,
   isOutLine: PropTypes.bool.isRequired,
   outLineColor: PropTypes.string.isRequired,

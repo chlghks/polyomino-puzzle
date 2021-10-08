@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import * as THREE from "three";
+import PropType from "prop-types";
 import { useThree } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
@@ -31,7 +32,7 @@ const blocks = {
   tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
 };
 
-export default function InteractiveBoard({ offsetHeight, edgeLength }) {
+export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
   const selectedBlock = useStore(state => state.selectedBlock);
   const unselectBlock = useStore(state => state.unselectBlock);
   const removeBlock = useStore(state => state.removeBlock);
@@ -64,11 +65,11 @@ export default function InteractiveBoard({ offsetHeight, edgeLength }) {
 
     position
       .add(offsetPosition)
-      .divideScalar(10)
+      .divideScalar(edgeLength)
       .floor()
-      .multiplyScalar(10)
+      .multiplyScalar(edgeLength)
       .addScalar(5)
-      .setY(offsetHeight + 1.1);
+      .setY(offsetHeight + boardHeight / 2 + .1);
 
     return position;
   };
@@ -94,7 +95,7 @@ export default function InteractiveBoard({ offsetHeight, edgeLength }) {
     const block = new THREE.Group();
 
     blocks[selectedBlock].forEach((position) => {
-      const geometry = new THREE.BoxGeometry(10, 6, 10);
+      const geometry = new THREE.BoxGeometry(edgeLength, blockHeight, edgeLength);
       const material = new THREE.MeshLambertMaterial({ color: "blue" });
       const mesh = new THREE.Mesh(geometry, material);
 
@@ -109,7 +110,7 @@ export default function InteractiveBoard({ offsetHeight, edgeLength }) {
 
     block.position
       .copy(correctedPosition)
-      .setY(offsetHeight + 4);
+      .setY(offsetHeight + blockHeight / 2 + boardHeight / 2);
 
     block.rotateY(RIGHT_ANGLE - board.rotation.y);
 
@@ -145,13 +146,13 @@ export default function InteractiveBoard({ offsetHeight, edgeLength }) {
         onPointerEnter={showSelectedArea}
         onPointerMove={setSelectedAreaPosition}
       >
-        <planeGeometry args={[10 * edgeLength, 10 * edgeLength]} />
-        <meshBasicMaterial visible={true} />
+        <planeGeometry args={[edgeLength * count, edgeLength * count]} />
+        <meshBasicMaterial visible={false} />
       </mesh>
       {selectedBlock && (
         <SelectedArea
           ref={selectArea}
-          kind={selectedBlock}
+          type={selectedBlock}
           color={RED}
           rotation={[0, RIGHT_ANGLE, 0]}
         />
@@ -159,3 +160,11 @@ export default function InteractiveBoard({ offsetHeight, edgeLength }) {
     </>
   );
 }
+
+InteractiveBoard.propType = {
+  offsetHeight: PropType.number.isRequired,
+  edgeLength: PropType.number.isRequired,
+  boardHeight: PropType.number.isRequired,
+  blockHeight: PropType.number.isRequired,
+  count: PropType.number.isRequired,
+};

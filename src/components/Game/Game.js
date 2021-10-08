@@ -21,12 +21,11 @@ const GameBoard = styled.div`
 `;
 
 export default function Game() {
-  const width = 10;
-  const depth = 10;
-  const edgeLength = 6;
-  const boardHeight = 2;
-  const blockHeight = 6;
-  const offsetHeight = 0;
+  const COUNT = 6;
+  const EDGE_LENGTH = 10;
+  const BOARD_HEIGHT = 2;
+  const BLOCK_HEIGHT = 6;
+  const OFFSET_HEIGHT = 0;
 
   return (
     <GameBoard>
@@ -44,18 +43,17 @@ export default function Game() {
         />
         <Light />
         <Board
-          offsetHeight={offsetHeight}
-          width={width}
-          height={boardHeight}
-          depth={depth}
-          edgeLength={edgeLength}
+          offsetHeight={OFFSET_HEIGHT}
+          boardHeight={BOARD_HEIGHT}
+          blockHeight={BLOCK_HEIGHT}
+          edgeLength={EDGE_LENGTH}
+          count={COUNT}
         />
         <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
-          <Arrow offsetHeight={offsetHeight} />
+          <Arrow offsetHeight={OFFSET_HEIGHT} />
           <BlockContainer
-            width={width}
-            height={blockHeight}
-            depth={depth}
+            edgeLength={EDGE_LENGTH}
+            height={BLOCK_HEIGHT}
             boxColor={WHITE}
             isOutLine={true}
             outLineColor={BLACK}

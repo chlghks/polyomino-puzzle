@@ -16,8 +16,8 @@ const areas = {
   tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
 };
 
-const SelectedArea = forwardRef(({ kind, rotation, color }, ref) => {
-  const area = areas[kind];
+const SelectedArea = forwardRef(({ type, rotation, color }, ref) => {
+  const area = areas[type];
 
   return (
     <group
@@ -39,7 +39,7 @@ const SelectedArea = forwardRef(({ kind, rotation, color }, ref) => {
 });
 
 SelectedArea.propTypes = {
-  kind: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   rotation: PropTypes.array.isRequired,
   color: PropTypes.string.isRequired,
 };

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import { BLACK, WHITE } from "../../constants/colors";
 
-export default function Box({ width, height, depth, position, boxColor, isOutLine, outLineColor }) {
-  const size = [width, height, depth];
+export default function Box({ edgeLength, height, position, boxColor, isOutLine, outLineColor }) {
+  const size = [edgeLength, height, edgeLength];
   const lineGeometry = new THREE.BoxGeometry(...size);
 
   return (
@@ -22,9 +22,8 @@ export default function Box({ width, height, depth, position, boxColor, isOutLin
 }
 
 Box.propTypes = {
-  width: PropTypes.number,
+  edgeLength: PropTypes.number,
   height: PropTypes.number,
-  depth: PropTypes.number,
   position: PropTypes.array,
   boxColor: PropTypes.string,
   isOutLine: PropTypes.bool,
@@ -32,9 +31,8 @@ Box.propTypes = {
 };
 
 Box.defaultProps = {
-  width: 1,
+  edgeLength: 1,
   height: 1,
-  depth: 1,
   position: [0, 0, 0],
   boxColor: WHITE,
   isOutLine: false,

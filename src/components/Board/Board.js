@@ -6,13 +6,12 @@ import useStore from "../../Store/useStore";
 import Cube from "../Cube/Cube";
 import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 
-export default function Board({ offsetHeight, width, height, depth, edgeLength }) {
+export default function Board({ offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
   const rotatingAmount = useStore((state) => state.angle);
   const boxGroup = useRef();
   const positions = [];
 
-  const OFFSET_WIDTH = width / -2 * edgeLength + 5;
-  const OFFSET_DEPTH = depth / -2 * edgeLength + 5;
+  const OFFSET_LENGTH = edgeLength / -2 * count + 5;
 
   useFrame(() => {
     const { rotation } = boxGroup.current;
@@ -33,11 +32,11 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
     }
   });
 
-  for (let i = 0; i < edgeLength; i++) {
-    for (let j = 0; j < edgeLength; j++) {
-      const X = width * i + OFFSET_WIDTH;
+  for (let i = 0; i < count; i++) {
+    for (let j = 0; j < count; j++) {
+      const X = edgeLength * i + OFFSET_LENGTH;
       const Y = 0;
-      const Z = depth * j + OFFSET_DEPTH;
+      const Z = edgeLength * j + OFFSET_LENGTH;
 
       const position = [X, Y, Z];
 
@@ -54,9 +53,8 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
         {positions.map((position) => (
           <Cube
             key={position.toString()}
-            width={width}
-            height={height}
-            depth={depth}
+            edgeLength={edgeLength}
+            height={boardHeight}
             isOutLine={true}
             position={position}
           />
@@ -64,7 +62,10 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
       </group>
       <InteractiveBoard
         offsetHeight={offsetHeight}
+        boardHeight={boardHeight}
+        blockHeight={blockHeight}
         edgeLength={edgeLength}
+        count={count}
       />
     </>
   );
@@ -72,8 +73,8 @@ export default function Board({ offsetHeight, width, height, depth, edgeLength }
 
 Board.propTypes = {
   offsetHeight: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  depth: PropTypes.number.isRequired,
+  boardHeight: PropTypes.number.isRequired,
+  blockHeight: PropTypes.number.isRequired,
   edgeLength: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
 };

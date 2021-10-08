@@ -5,13 +5,13 @@ import useStore from "../../Store/useStore";
 import Block from "../Block/Block";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-export default function BlockBox({ position, length, kind, width, height, depth, boxColor, isOutLine, outLineColor }) {
+export default function BlockBox({ position, length, type, edgeLength, height, boxColor, isOutLine, outLineColor }) {
   const selectBlock = useStore((state) => state.selectBlock);
 
   const handleSelectBlock = (event) => {
     event.stopPropagation();
 
-    selectBlock(kind);
+    selectBlock(type);
   };
 
   return (
@@ -23,12 +23,11 @@ export default function BlockBox({ position, length, kind, width, height, depth,
         </lineSegments>
       </mesh>
       <Block
-        kind={kind}
+        type={type}
         position={position}
         rotation={[0, RIGHT_ANGLE / 2, 0]}
-        width={width}
+        edgeLength={edgeLength}
         height={height}
-        depth={depth}
         boxColor={boxColor}
         isOutLine={isOutLine}
         outLineColor={outLineColor}
@@ -40,10 +39,9 @@ export default function BlockBox({ position, length, kind, width, height, depth,
 BlockBox.propTypes = {
   position: PropTypes.array.isRequired,
   length: PropTypes.number.isRequired,
-  kind: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
+  edgeLength: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  depth: PropTypes.number.isRequired,
   boxColor: PropTypes.string.isRequired,
   isOutLine: PropTypes.bool.isRequired,
   outLineColor: PropTypes.string.isRequired,

@@ -5,7 +5,7 @@ import useStore from "../../Store/useStore";
 import BlockBox from "../BlockBox/BlockBox";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-export default function BlockContainer({ width, height, depth, boxColor, isOutLine, outLineColor }) {
+export default function BlockContainer({ edgeLength, height, boxColor, isOutLine, outLineColor }) {
   const blockList = useStore(state => state.blockList);
   const container = useRef();
   const blockOptions = [];
@@ -24,7 +24,7 @@ export default function BlockContainer({ width, height, depth, boxColor, isOutLi
 
     const option = {
       position: [X, CONTAINER_Y, CONTAINER_Z],
-      kind: blockList[i],
+      type: blockList[i],
     };
 
     blockOptions.push(option);
@@ -65,18 +65,17 @@ export default function BlockContainer({ width, height, depth, boxColor, isOutLi
         <meshBasicMaterial />
       </mesh>
       {blockOptions.map((option) => {
-        const { position, kind } = option;
+        const { position, type } = option;
 
         return (
           <BlockBox
             key={position.toString()}
-            kind={kind}
+            type={type}
             length={BLOCK_BOX_LENGTH}
             position={position}
             rotation={[0, RIGHT_ANGLE / 2, 0]}
-            width={width}
+            edgeLength={edgeLength}
             height={height}
-            depth={depth}
             boxColor={boxColor}
             isOutLine={isOutLine}
             outLineColor={outLineColor}
@@ -88,9 +87,8 @@ export default function BlockContainer({ width, height, depth, boxColor, isOutLi
 };
 
 BlockContainer.propTypes = {
-  width: PropTypes.number.isRequired,
+  edgeLength: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  depth: PropTypes.number.isRequired,
   boxColor: PropTypes.string.isRequired,
   isOutLine: PropTypes.bool.isRequired,
   outLineColor: PropTypes.string.isRequired,
