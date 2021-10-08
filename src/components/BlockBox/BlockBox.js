@@ -1,12 +1,21 @@
 import * as THREE from "three";
 import PropTypes from "prop-types";
 
+import useStore from "../../Store/useStore";
 import Block from "../Block/Block";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function BlockBox({ position, length, kind, width, height, depth, boxColor, isOutLine, outLineColor }) {
+  const selectBlock = useStore((state) => state.selectBlock);
+
+  const handleSelectBlock = (event) => {
+    event.stopPropagation();
+
+    selectBlock(kind);
+  };
+
   return (
-    <group key={position.toString()}>
+    <group onPointerDown={handleSelectBlock}>
       <mesh position={position}>
         <lineSegments>
           <edgesGeometry args={[new THREE.PlaneGeometry(length, length)]} />

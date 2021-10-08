@@ -1,11 +1,13 @@
 import create from "zustand";
 
-import { RIGHT_ANGLE } from "../constants/angles";
+import createAngleSlice from "./createAngleSlice";
+import createBlockListSlice from "./createBlockListSlice";
+import createSelectedBlockSlice from "./createSelectedBlockSlice";
 
-const useStore = create(set => ({
-  angle: 0,
-  turnRight: () => set((state) => ({ angle: state.angle + RIGHT_ANGLE })),
-  turnLeft: () => set((state) => ({ angle: state.angle - RIGHT_ANGLE })),
+const useStore = create((set, get) => ({
+  ...createAngleSlice(set, get),
+  ...createBlockListSlice(set,get),
+  ...createSelectedBlockSlice(set, get),
 }));
 
 export default useStore;

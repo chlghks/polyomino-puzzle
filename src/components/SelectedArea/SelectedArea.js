@@ -16,9 +16,7 @@ const areas = {
   tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
 };
 
-const SelectedArea = forwardRef(({ rotation, color }, ref) => {
-  const kind = "domino"; // mock data
-
+const SelectedArea = forwardRef(({ kind, rotation, color }, ref) => {
   const area = areas[kind];
 
   return (
@@ -41,6 +39,7 @@ const SelectedArea = forwardRef(({ rotation, color }, ref) => {
 });
 
 SelectedArea.propTypes = {
+  kind: PropTypes.string.isRequired,
   rotation: PropTypes.array.isRequired,
   color: PropTypes.string.isRequired,
 };

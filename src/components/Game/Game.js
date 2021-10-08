@@ -14,26 +14,11 @@ import {
   WHITE,
 } from "../../constants/colors";
 
-import {
-  DOMINO,
-  TROMINO_I,
-  TROMINO_L,
-  TETROMINO_I,
-  TETROMINO_O,
-  TETROMINO_T,
-  TETROMINO_J,
-  TETROMINO_L,
-  TETROMINO_S,
-  TETROMINO_Z,
-} from "../../constants/blockTypes";
-
 const GameBoard = styled.div`
   width: 600px;
   height: 700px;
   margin: 0 auto;
 `;
-
-const mockBlocks = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_O, TETROMINO_T, TETROMINO_J, TETROMINO_L, TETROMINO_S, TETROMINO_Z];
 
 export default function Game() {
   const width = 10;
@@ -68,7 +53,6 @@ export default function Game() {
         <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
           <Arrow offsetHeight={offsetHeight} />
           <BlockContainer
-            blocks={mockBlocks}
             width={width}
             height={blockHeight}
             depth={depth}
