@@ -4,14 +4,10 @@ import { useFrame } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
 import Cube from "../Cube/Cube";
-import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 
-export default function Board({ offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
+export default function Board({ blockPositions, offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
   const rotatingAmount = useStore((state) => state.angle);
   const boxGroup = useRef();
-  const positions = [];
-
-  const OFFSET_LENGTH = edgeLength / -2 * count + 5;
 
   useFrame(() => {
     const { rotation } = boxGroup.current;
@@ -32,25 +28,13 @@ export default function Board({ offsetHeight, boardHeight, blockHeight, edgeLeng
     }
   });
 
-  for (let i = 0; i < count; i++) {
-    for (let j = 0; j < count; j++) {
-      const X = edgeLength * i + OFFSET_LENGTH;
-      const Y = 0;
-      const Z = edgeLength * j + OFFSET_LENGTH;
-
-      const position = [X, Y, Z];
-
-      positions.push(position);
-    }
-  }
-
   return (
     <>
       <group
         ref={boxGroup}
         position={[0, offsetHeight, 0]}
       >
-        {positions.map((position) => (
+        {blockPositions.map((position) => (
           <Cube
             key={position.toString()}
             edgeLength={edgeLength}
@@ -60,18 +44,12 @@ export default function Board({ offsetHeight, boardHeight, blockHeight, edgeLeng
           />
         ))}
       </group>
-      <InteractiveBoard
-        offsetHeight={offsetHeight}
-        boardHeight={boardHeight}
-        blockHeight={blockHeight}
-        edgeLength={edgeLength}
-        count={count}
-      />
     </>
   );
 }
 
 Board.propTypes = {
+  blockPositions: PropTypes.array.isRequired,
   offsetHeight: PropTypes.number.isRequired,
   boardHeight: PropTypes.number.isRequired,
   blockHeight: PropTypes.number.isRequired,

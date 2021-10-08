@@ -1,6 +1,11 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+import { Canvas } from "@react-three/fiber";
 
+import Camera from "../Camera/Camera";
+import Scene from "../Scene/Scene";
+import Light from "../Light/Light";
 import Game from "../Game/Game";
+import { BLACK } from "../../constants/colors";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -8,11 +13,33 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const CanvasBoard = styled.div`
+  width: 600px;
+  height: 700px;
+  margin: 0 auto;
+`;
+
 export default function App() {
   return (
     <>
       <GlobalStyle />
-      <Game />
+      <CanvasBoard>
+        <Canvas>
+          <Scene backgroundColor={BLACK} />
+          <Camera
+            left={-65}
+            right={65}
+            top={65}
+            bottom={-65}
+            near={0}
+            far={150}
+            position={[60, 40, 60]}
+            lookAt={[0, 0, 0]}
+          />
+          <Light />
+          <Game />
+        </Canvas>
+      </CanvasBoard>
     </>
   );
 }
