@@ -5,7 +5,7 @@ import { useThree } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
 import SelectedArea from "../SelectedArea/SelectedArea";
-import { RED } from "../../constants/colors";
+import { BLACK, RED } from "../../constants/colors";
 import { RIGHT_ANGLE } from "../../constants/angles";
 import convertDegree from "../../utils/convertDegree";
 import correctPosition from "../../utils/correctPosition";
@@ -32,71 +32,141 @@ const blocks = {
   tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
 };
 
+const getPosition = (selectedBlock, size, offsetX, offsetY, camera, edgeLength) => {
+  if (selectedBlock === null) {
+    return null;
+  }
+
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  const { width: canvasWidth, height: canvasHeight } = size;
+  const [mouseX, mouseY] = [(offsetX / canvasWidth) * 2 - 1, -(offsetY / canvasHeight) * 2 + 1];
+
+  mouse.set(mouseX, mouseY);
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(raycasterObject, false);
+
+  if (!intersects.length) {
+    return null;
+  }
+
+  const position = intersects[0].point;
+  const offsetPosition = intersects[0].face.normal;
+
+  position
+    .add(offsetPosition)
+    .divideScalar(edgeLength)
+    .floor()
+    .multiplyScalar(edgeLength)
+    .addScalar(5);
+
+  return position;
+};
+
+const validatePosition = (cubePositions, offsetPosition, direction, count, boardStatus) => {
+  const validPositions = [];
+
+  cubePositions.forEach((cubePosition) => {
+    const convertedCubePosition = {
+      x: cubePosition[0] + offsetPosition.x,
+      z: cubePosition[2] + offsetPosition.z
+    };
+
+    const correctedPosition = correctPosition(convertedCubePosition, direction);
+
+    const X = correctedPosition.x;
+    const Z = correctedPosition.z;
+    const BOARD_LIMIT = (count - 1) * 5;
+
+    if (Math.abs(X) > BOARD_LIMIT || Math.abs(Z) > BOARD_LIMIT) {
+      return;
+    }
+
+    const location = [X, Z].toString();
+
+    if (boardStatus[location]) {
+      return;
+    }
+
+    validPositions.push([X, Z]);
+  });
+
+  return validPositions;
+};
+
 export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
   const selectedBlock = useStore(state => state.selectedBlock);
   const unselectBlock = useStore(state => state.unselectBlock);
   const removeBlock = useStore(state => state.removeBlock);
+  const boardStatus = useStore(state => state.boardStatus);
+  const setBlock = useStore(state => state.setBlock);
   const selectArea = useRef(null);
   const scene = useThree(state => state.scene);
   const size = useThree(state => state.size);
-
-  const getPosition = (offsetX, offsetY, camera) => {
-    if (selectArea.current === null) {
-      return null;
-    }
-
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    const { width: canvasWidth, height: canvasHeight } = size;
-    const [mouseX, mouseY] = [(offsetX / canvasWidth) * 2 - 1, -(offsetY / canvasHeight) * 2 + 1];
-
-    mouse.set(mouseX, mouseY);
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(raycasterObject, false);
-
-    if (!intersects.length) {
-      return null;
-    }
-
-    const position = intersects[0].point;
-    const offsetPosition = intersects[0].face.normal;
-
-    position
-      .add(offsetPosition)
-      .divideScalar(edgeLength)
-      .floor()
-      .multiplyScalar(edgeLength)
-      .addScalar(5)
-      .setY(offsetHeight + boardHeight / 2 + .1);
-
-    return position;
-  };
+  const cubePositions = blocks[selectedBlock];
 
   const setSelectedAreaPosition = ({ offsetX, offsetY, camera }) => {
-    const position = getPosition(offsetX, offsetY, camera);
+    const offsetPosition = getPosition(selectedBlock, size, offsetX, offsetY, camera, edgeLength);
 
-    if (position === null) {
-      return;
-    }
-
-    selectArea.current.position.copy(position);
-  };
-
-  const createBlock = ({ offsetX, offsetY, camera }) => {
-    const createdBlockPosition = getPosition(offsetX, offsetY, camera);
-
-    if (createdBlockPosition === null) {
+    if (offsetPosition === null) {
       return;
     }
 
     const board = scene.children[2];
+    const boardDegree = convertDegree(board.rotation.y);
+    const direction = boardDegree / 360 % 1;
+
+    const correctedCubePositions = validatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
+
+    const isInValid = correctedCubePositions.length !== cubePositions.length;
+
+    const color = new THREE.Color(isInValid ? BLACK : RED);
+
+    selectArea.current.children.forEach((area, index) => {
+      if (!correctedCubePositions[index]) {
+        area.visible = false;
+
+        return;
+      }
+
+      area.position.x = correctedCubePositions[index][0];
+      area.position.z = correctedCubePositions[index][1];
+      area.material.color = color;
+      area.visible = true;
+    });
+
+    selectArea.current.rotation.y = board.rotation.y;
+
+    selectArea.current.position
+      .setY(offsetHeight + boardHeight / 2 + 0.1);;
+  };
+
+  const createBlock = ({ offsetX, offsetY, camera }) => {
+    const offsetPosition = getPosition(selectedBlock, size, offsetX, offsetY, camera, edgeLength);
+
+    if (offsetPosition === null) {
+      return;
+    }
+
+    const board = scene.children[2];
+    const boardDegree = convertDegree(board.rotation.y);
+    const direction = boardDegree / 360 % 1;
+
+    const correctedCubePositions = validatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
+
+    const isInValid = correctedCubePositions.length !== cubePositions.length;
+
+    if (isInValid) {
+      return;
+    }
+
     const block = new THREE.Group();
 
-    blocks[selectedBlock].forEach((position) => {
+    cubePositions.forEach((position) => {
       const geometry = new THREE.BoxGeometry(edgeLength, blockHeight, edgeLength);
-      const material = new THREE.MeshLambertMaterial({ color: "blue" });
+      const material = new THREE.MeshLambertMaterial({ color: BLACK });
       const mesh = new THREE.Mesh(geometry, material);
 
       mesh.position.set(...position);
@@ -104,20 +174,19 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
       return block.add(mesh);
     });
 
-    const boardDegree = convertDegree(board.rotation.y);
-    const direction = boardDegree / 360 % 1;
-    const correctedPosition = correctPosition(createdBlockPosition, direction);
+    const correctedPosition = correctPosition(offsetPosition, direction);
 
     block.position
       .copy(correctedPosition)
       .setY(offsetHeight + blockHeight / 2 + boardHeight / 2);
 
-    block.rotateY(RIGHT_ANGLE - board.rotation.y);
+    block.rotateY(-board.rotation.y);
 
     board.add(block);
 
-    removeBlock(selectedBlock);
     unselectBlock();
+    removeBlock(selectedBlock);
+    setBlock(correctedCubePositions);
   };
 
   const showSelectedArea = () => {
@@ -152,9 +221,9 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
       {selectedBlock && (
         <SelectedArea
           ref={selectArea}
-          type={selectedBlock}
+          edgeLength={edgeLength}
+          count={cubePositions.length}
           color={RED}
-          rotation={[0, RIGHT_ANGLE, 0]}
         />
       )}
     </>

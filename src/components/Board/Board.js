@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import useStore from "../../Store/useStore";
 import Cube from "../Cube/Cube";
 
-export default function Board({ blockPositions, offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
+export default function Board({ blockPositions, offsetHeight, boardHeight, edgeLength }) {
   const rotatingAmount = useStore((state) => state.angle);
   const boxGroup = useRef();
 
@@ -52,7 +52,5 @@ Board.propTypes = {
   blockPositions: PropTypes.array.isRequired,
   offsetHeight: PropTypes.number.isRequired,
   boardHeight: PropTypes.number.isRequired,
-  blockHeight: PropTypes.number.isRequired,
   edgeLength: PropTypes.number.isRequired,
-  count: PropTypes.number.isRequired,
 };

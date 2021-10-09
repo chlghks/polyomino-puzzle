@@ -3,34 +3,18 @@ import PropTypes from "prop-types";
 
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-const areas = {
-  domino: [[0, 0, 10], [0, 0, 0]],
-  trominoI: [[0, 0, -10], [0, 0, 0], [0, 0, 10]],
-  trominoL: [[0, 0, 0], [0, 0, -10], [-10, 0, 0]],
-  tetrominoI: [[0, 0, -10], [0, 0, 0], [0, 0, 10], [0, 0, 20]],
-  tetrominoO: [[0, 0, 0], [-10, 0, 0], [0, 0, -10], [-10, 0, -10]],
-  tetrominoT: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 0]],
-  tetrominoJ: [[0, 0, 0], [-10, 0, 0], [10, 0, 0], [10, 0, 10]],
-  tetrominoL: [[0, 0, 0], [-10, 0, 0], [10, 0, 0], [-10, 0, 10]],
-  tetrominoS: [[0, 0, 0], [10, 0, 0], [0, 0, 10], [-10, 0, 10]],
-  tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
-};
-
-const SelectedArea = forwardRef(({ type, rotation, color }, ref) => {
-  const area = areas[type];
-
+const SelectedArea = forwardRef(({ edgeLength, count, color }, ref) => {
   return (
     <group
       ref={ref}
-      rotation={rotation}
     >
-      {area.map((position) => (
+      {Array(count).fill(null).map((_, index) => (
         <mesh
-          key={position.toString()}
-          position={position}
+          key={index}
           rotation={[- RIGHT_ANGLE, 0, 0]}
+          visible={false}
         >
-          <planeGeometry args={[10, 10]} />
+          <planeGeometry args={[edgeLength, edgeLength]} />
           <meshBasicMaterial color={color} />
         </mesh>
       ))}
@@ -39,8 +23,8 @@ const SelectedArea = forwardRef(({ type, rotation, color }, ref) => {
 });
 
 SelectedArea.propTypes = {
-  type: PropTypes.string.isRequired,
-  rotation: PropTypes.array.isRequired,
+  edgeLength: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
 

@@ -1,23 +1,27 @@
 import Board from "../Board/Board";
 import Arrow from "../Arrow/Arrow";
 import BlockContainer from "../BlockContainer/BlockContainer";
+
+import useStore from "../../Store/useStore";
+import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 import {
   BLACK,
   WHITE,
 } from "../../constants/colors";
-import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 
 export default function Game() {
-  const COUNT = 6;
+  const getBoardStatus = useStore(state => state.getBoardStatus);
+  const COUNT = 4;
   const EDGE_LENGTH = 10;
   const BOARD_HEIGHT = 2;
-  const BLOCK_HEIGHT = 6;
+  const BLOCK_HEIGHT = 4;
   const OFFSET_HEIGHT = 0;
   const OFFSET_LENGTH = EDGE_LENGTH / -2 * COUNT + 5;
 
   const blockPositions = [];
+  const boardStatus = {};
 
   for (let i = 0; i < COUNT; i++) {
     for (let j = 0; j < COUNT; j++) {
@@ -28,8 +32,14 @@ export default function Game() {
       const position = [X, Y, Z];
 
       blockPositions.push(position);
+
+      const location = [X, Z].toString();
+
+      boardStatus[location] = false;
     }
   }
+
+  getBoardStatus(boardStatus);
 
   return (
     <>
@@ -37,9 +47,7 @@ export default function Game() {
         blockPositions={blockPositions}
         offsetHeight={OFFSET_HEIGHT}
         boardHeight={BOARD_HEIGHT}
-        blockHeight={BLOCK_HEIGHT}
         edgeLength={EDGE_LENGTH}
-        count={COUNT}
       />
       <InteractiveBoard
         offsetHeight={OFFSET_HEIGHT}

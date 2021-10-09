@@ -25,7 +25,7 @@ export default function BlockBox({ position, length, type, edgeLength, height, b
       <Block
         type={type}
         position={position}
-        rotation={[0, RIGHT_ANGLE / 2, 0]}
+        rotation={[0, - RIGHT_ANGLE / 2, 0]}
         edgeLength={edgeLength}
         height={height}
         boxColor={boxColor}
