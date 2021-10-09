@@ -32,8 +32,8 @@ export default function App() {
             top={65}
             bottom={-65}
             near={0}
-            far={150}
-            position={[60, 40, 60]}
+            far={255}
+            position={[80, 60, 80]}
             lookAt={[0, 0, 0]}
           />
           <Light />
