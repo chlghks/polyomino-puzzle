@@ -6,13 +6,21 @@ import useStore from "../../Store/useStore";
 import Cube from "../Cube/Cube";
 import { BOARD } from "../../constants/blockTypes";
 
-export default function Board({ blockPositions, offsetHeight, boardHeight, edgeLength }) {
-  const rotatingAmount = useStore((state) => state.angle);
+export default function Board({ blockPositions, blockHeight, boardHeight, edgeLength }) {
+  const rotatingAmount = useStore(state => state.angle);
+  const stage = useStore(state => state.stage);
   const boxGroup = useRef();
+  const offsetHeight = (stage - 1) * blockHeight;
 
   useFrame(() => {
-    const { rotation } = boxGroup.current;
+    const { rotation, position } = boxGroup.current;
     const SPEED = 0.05;
+
+    if (!rotation) {
+      return;
+    }
+
+    position.lerp({ x: 0, y: -offsetHeight, z: 0 }, 0.07);
 
     if (Math.abs(rotation.y - rotatingAmount) < SPEED) {
       rotation.y = rotatingAmount;
@@ -34,7 +42,6 @@ export default function Board({ blockPositions, offsetHeight, boardHeight, edgeL
       <group
         ref={boxGroup}
         name={BOARD}
-        position={[0, offsetHeight, 0]}
       >
         {blockPositions.map((position) => (
           <Cube
@@ -53,7 +60,7 @@ export default function Board({ blockPositions, offsetHeight, boardHeight, edgeL
 
 Board.propTypes = {
   blockPositions: PropTypes.array.isRequired,
-  offsetHeight: PropTypes.number.isRequired,
+  blockHeight: PropTypes.number.isRequired,
   boardHeight: PropTypes.number.isRequired,
   edgeLength: PropTypes.number.isRequired,
 };

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import PropType from "prop-types";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -16,6 +16,14 @@ import {
   BLUE,
   RED
 } from "../../constants/colors";
+
+import {
+  DOMINO,
+  TETROMINO_I,
+  TETROMINO_T,
+  TROMINO_I,
+  TROMINO_L,
+} from "../../constants/blockTypes";
 
 const geometry = new THREE.PlaneGeometry(130, 290);
 
@@ -99,19 +107,43 @@ const validatePosition = (cubePositions, offsetPosition, direction, count, board
   return validPositions;
 };
 
-export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
-  const setBoardStatus = useStore(state => state.setBoardStatus);
+export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength, count }) {
+  const updateBoardStatus = useStore(state => state.updateBoardStatus);
+  const increaseStage = useStore(state => state.increaseStage);
   const selectedBlock = useStore(state => state.selectedBlock);
   const unselectBlock = useStore(state => state.unselectBlock);
-  const removeBlock = useStore(state => state.removeBlock);
+  const setBlockList = useStore(state => state.setBlockList);
   const boardStatus = useStore(state => state.boardStatus);
+  const removeBlock = useStore(state => state.removeBlock);
+  const resetBoard = useStore(state => state.resetBoard);
   const addBlock = useStore(state => state.addBlock);
+  const stage = useStore(state => state.stage);
   const camera = useThree(state => state.camera);
   const scene = useThree(state => state.scene);
   const size = useThree(state => state.size);
   const previewBlock = useRef(null);
   const selectArea = useRef(null);
+
+  const offsetHeight = (stage - 1) * blockHeight;
   const cubePositions = blocks[selectedBlock];
+  const board = scene.getObjectByName(BOARD);
+
+  const isFullBlock = Object.values(boardStatus).every((value) => {
+    return value;
+  });
+
+  useEffect(() => {
+    if (!isFullBlock) {
+      return;
+    }
+
+    increaseStage();
+    resetBoard();
+
+    const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
+
+    setBlockList(mockBlockList);
+  }, [isFullBlock, increaseStage, resetBoard, setBlockList]);
 
   useFrame((state) => {
     const offsetX = 300 + state.mouse.x * 300;
@@ -139,7 +171,6 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
       .multiplyScalar(edgeLength)
       .addScalar(5);
 
-    const board = scene.children[2];
     const boardDegree = convertDegree(board.rotation.y);
     const direction = boardDegree / 360 % 1;
 
@@ -165,7 +196,7 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
     selectArea.current.rotation.y = board.rotation.y;
 
     selectArea.current.position
-      .setY(offsetHeight + boardHeight / 2 + 0.1);;
+      .setY(boardHeight / 2 + 0.1);;
   };
 
   const createBlock = ({ offsetX, offsetY, camera }) => {
@@ -181,7 +212,6 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
       .multiplyScalar(edgeLength)
       .addScalar(5);
 
-    const board = scene.children[2];
     const boardDegree = convertDegree(board.rotation.y);
     const direction = boardDegree / 360 % 1;
 
@@ -214,7 +244,7 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
 
     unselectBlock();
     removeBlock(selectedBlock);
-    setBoardStatus(correctedCubePositions, true);
+    updateBoardStatus(correctedCubePositions, true);
   };
 
   const showSelectedArea = () => {
@@ -243,7 +273,6 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
 
     const { width: canvasWidth, height: canvasHeight } = size;
     const [mouseX, mouseY] = [(offsetX / canvasWidth) * 2 - 1, -(offsetY / canvasHeight) * 2 + 1];
-    const board = scene.children[2];
 
     mouse.set(mouseX, mouseY);
 
@@ -297,7 +326,7 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
       return location;
     });
 
-    setBoardStatus(correctedCubeLocations, false);
+    updateBoardStatus(correctedCubeLocations, false);
 
     addBlock(returningBlock.name);
 
@@ -307,7 +336,7 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
   return (
     <>
       <mesh
-        position={[0, offsetHeight, 0]}
+        position={[0, 0, 0]}
         rotation={[0, RIGHT_ANGLE / 2, 0]}
         onPointerUp={createBlock}
         onPointerOut={hideSelectedArea}
@@ -319,32 +348,31 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
         <meshBasicMaterial visible={false} />
       </mesh>
       {selectedBlock && (
-        <SelectedArea
-          ref={selectArea}
-          edgeLength={edgeLength}
-          count={cubePositions.length}
-          color={RED}
-        />
-      )}
-      {selectedBlock && (
-        <group ref={previewBlock}>
-          <Block
-            cubePositions={cubePositions}
-            blockPosition={[0, 0, 0]}
-            rotation={[0, 0, 0]}
+        <>
+          <SelectedArea
+            ref={selectArea}
             edgeLength={edgeLength}
-            height={blockHeight}
-            boxColor={RED}
-            isOutLine={false}
+            count={cubePositions.length}
+            color={RED}
           />
-        </group>
+          <group ref={previewBlock}>
+            <Block
+              cubePositions={cubePositions}
+              blockPosition={[0, 0, 0]}
+              rotation={[0, 0, 0]}
+              edgeLength={edgeLength}
+              height={blockHeight}
+              boxColor={RED}
+              isOutLine={false}
+            />
+          </group>
+        </>
       )}
     </>
   );
 }
 
 InteractiveBoard.propType = {
-  offsetHeight: PropType.number.isRequired,
   edgeLength: PropType.number.isRequired,
   boardHeight: PropType.number.isRequired,
   blockHeight: PropType.number.isRequired,

@@ -1,12 +1,25 @@
 const createBoardStatusSlice = (set, get) => ({
   boardStatus: null,
-  getBoardStatus: (value) => {
+  setBoardStatus: (value) => {
     set(() => ({ boardStatus: value }));
   },
-  resetBoard: () => {
+  deleteBoard: () => {
     set(() => ({ boardStatus: null }));
   },
-  setBoardStatus: (value, boolean) => {
+  resetBoard: () => {
+    set((state) => {
+      const locations =  Object.keys(state.boardStatus);
+
+      const newBoardStatus = locations.reduce((boardStatus, location) => {
+        boardStatus[location] = false;
+
+        return boardStatus;
+      }, {});
+
+      return { boardStatus: newBoardStatus };
+    });
+  },
+  updateBoardStatus: (value, boolean) => {
     set((state) => {
       const newBoardStatus = { ...state.boardStatus };
 
