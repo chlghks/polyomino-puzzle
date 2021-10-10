@@ -3,14 +3,17 @@ import PropTypes from "prop-types";
 
 import { BLACK, WHITE } from "../../constants/colors";
 
-export default function Box({ edgeLength, height, position, boxColor, isOutLine, outLineColor }) {
+export default function Box({ edgeLength, name, height, position, boxColor, isOutLine, outLineColor }) {
   const size = [edgeLength, height, edgeLength];
   const lineGeometry = new THREE.BoxGeometry(...size);
 
   return (
-    <mesh position={position}>
+    <mesh
+      name={name}
+      position={position}
+    >
       <boxGeometry args={size} />
-      <meshLambertMaterial color={boxColor}/>
+      <meshLambertMaterial color={boxColor} />
       {isOutLine && (
         <lineSegments>
           <edgesGeometry args={[lineGeometry]} />
@@ -23,6 +26,7 @@ export default function Box({ edgeLength, height, position, boxColor, isOutLine,
 
 Box.propTypes = {
   edgeLength: PropTypes.number,
+  name: PropTypes.string,
   height: PropTypes.number,
   position: PropTypes.array,
   boxColor: PropTypes.string,
@@ -32,6 +36,7 @@ Box.propTypes = {
 
 Box.defaultProps = {
   edgeLength: 1,
+  name: "",
   height: 1,
   position: [0, 0, 0],
   boxColor: WHITE,

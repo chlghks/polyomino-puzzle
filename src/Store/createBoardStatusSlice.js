@@ -6,15 +6,16 @@ const createBoardStatusSlice = (set, get) => ({
   resetBoard: () => {
     set(() => ({ boardStatus: null }));
   },
-  setBlock: (value) => {
+  setBoardStatus: (value, boolean) => {
     set((state) => {
       const newBoardStatus = { ...state.boardStatus };
 
       value.forEach(position => {
         const location = position.toString();
 
-        newBoardStatus[location] = true;
+        newBoardStatus[location] = boolean;
       });
+
       return { boardStatus: newBoardStatus };
     });
   },

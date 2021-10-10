@@ -1,3 +1,4 @@
+const BOARD = "board";
 const DOMINO = "domino";
 const TROMINO_I = "trominoI";
 const TROMINO_L = "trominoL";
@@ -10,6 +11,7 @@ const TETROMINO_S = "tetrominoS";
 const TETROMINO_Z = "tetrominoZ";
 
 export {
+  BOARD,
   DOMINO,
   TROMINO_I,
   TROMINO_L,

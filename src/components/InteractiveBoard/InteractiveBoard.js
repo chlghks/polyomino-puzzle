@@ -9,6 +9,7 @@ import SelectedArea from "../SelectedArea/SelectedArea";
 import correctPosition from "../../utils/correctPosition";
 import convertDegree from "../../utils/convertDegree";
 import { RIGHT_ANGLE } from "../../constants/angles";
+import { BOARD } from "../../constants/blockTypes";
 
 import {
   BLACK,
@@ -99,11 +100,12 @@ const validatePosition = (cubePositions, offsetPosition, direction, count, board
 };
 
 export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeight, edgeLength, count }) {
+  const setBoardStatus = useStore(state => state.setBoardStatus);
   const selectedBlock = useStore(state => state.selectedBlock);
   const unselectBlock = useStore(state => state.unselectBlock);
   const removeBlock = useStore(state => state.removeBlock);
   const boardStatus = useStore(state => state.boardStatus);
-  const setBlock = useStore(state => state.setBlock);
+  const addBlock = useStore(state => state.addBlock);
   const camera = useThree(state => state.camera);
   const scene = useThree(state => state.scene);
   const size = useThree(state => state.size);
@@ -206,12 +208,13 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
       .setY(offsetHeight + blockHeight / 2 + boardHeight / 2);
 
     block.rotateY(-board.rotation.y);
+    block.name = selectedBlock;
 
     board.add(block);
 
     unselectBlock();
     removeBlock(selectedBlock);
-    setBlock(correctedCubePositions);
+    setBoardStatus(correctedCubePositions, true);
   };
 
   const showSelectedArea = () => {
@@ -230,6 +233,77 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
     selectArea.current.visible = false;
   };
 
+  const returnBlock = ({ offsetX, offsetY }) => {
+    if (selectedBlock !== null) {
+      return;
+    }
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    const { width: canvasWidth, height: canvasHeight } = size;
+    const [mouseX, mouseY] = [(offsetX / canvasWidth) * 2 - 1, -(offsetY / canvasHeight) * 2 + 1];
+    const board = scene.children[2];
+
+    mouse.set(mouseX, mouseY);
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(board.children, true);
+
+    if (!intersects.length) {
+      return;
+    }
+
+    const returningBlock = intersects[0].object.parent;
+    const isBoard = returningBlock.name === BOARD;
+
+    if (isBoard) {
+      return;
+    }
+
+    const returningBlockPositions = [];
+
+    returningBlock.children.forEach((cube) => {
+      const { x, y, z } = cube.position;
+
+      returningBlockPositions.push([x, y, z]);
+    });
+
+    const boardDegree = convertDegree(board.rotation.y);
+    const direction = boardDegree / 360 % 1;
+
+    const offsetPosition = getPosition(returningBlock, size, offsetX, offsetY, camera);
+
+    offsetPosition
+      .divideScalar(edgeLength)
+      .floor()
+      .multiplyScalar(edgeLength)
+      .addScalar(5);
+
+    const correctedCubeLocations = returningBlockPositions.map((cubePosition) => {
+      const convertedCubePosition = {
+        x: cubePosition[0] + offsetPosition.x,
+        z: cubePosition[2] + offsetPosition.z
+      };
+
+      const correctedPosition = correctPosition(convertedCubePosition, direction);
+
+      const X = correctedPosition.x;
+      const Z = correctedPosition.z;
+
+      const location = [X, Z].toString();
+
+      return location;
+    });
+
+    setBoardStatus(correctedCubeLocations, false);
+
+    addBlock(returningBlock.name);
+
+    returningBlock.removeFromParent();
+  };
+
   return (
     <>
       <mesh
@@ -237,6 +311,7 @@ export default function InteractiveBoard({ offsetHeight, boardHeight, blockHeigh
         rotation={[0, RIGHT_ANGLE / 2, 0]}
         onPointerUp={createBlock}
         onPointerOut={hideSelectedArea}
+        onPointerDown={returnBlock}
         onPointerEnter={showSelectedArea}
         onPointerMove={setSelectedArea}
       >

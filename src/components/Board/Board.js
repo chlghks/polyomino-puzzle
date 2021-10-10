@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
 import Cube from "../Cube/Cube";
+import { BOARD } from "../../constants/blockTypes";
 
 export default function Board({ blockPositions, offsetHeight, boardHeight, edgeLength }) {
   const rotatingAmount = useStore((state) => state.angle);
@@ -32,12 +33,14 @@ export default function Board({ blockPositions, offsetHeight, boardHeight, edgeL
     <>
       <group
         ref={boxGroup}
+        name={BOARD}
         position={[0, offsetHeight, 0]}
       >
         {blockPositions.map((position) => (
           <Cube
             key={position.toString()}
             edgeLength={edgeLength}
+            name={BOARD}
             height={boardHeight}
             isOutLine={true}
             position={position}

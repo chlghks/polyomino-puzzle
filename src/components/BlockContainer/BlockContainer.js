@@ -69,7 +69,7 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
 
         return (
           <BlockBox
-            key={position.toString()}
+            key={type}
             type={type}
             length={BLOCK_BOX_LENGTH}
             position={position}
