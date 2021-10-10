@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import Camera from "../Camera/Camera";
 import Scene from "../Scene/Scene";
 import Light from "../Light/Light";
+import Main from "../Main/Main";
 import Game from "../Game/Game";
 import { BLACK } from "../../constants/colors";
 
@@ -33,10 +34,10 @@ export default function App() {
             bottom={-65}
             near={0}
             far={255}
-            position={[80, 60, 80]}
             lookAt={[0, 0, 0]}
           />
           <Light />
+          <Main />
           <Game />
         </Canvas>
       </CanvasBoard>

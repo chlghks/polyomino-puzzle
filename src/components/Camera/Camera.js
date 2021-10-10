@@ -1,19 +1,27 @@
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import PropTypes from "prop-types";
+import useStore from "../../Store/useStore";
 
-export default function Camera({ left, right, top, bottom, near, far, position, lookAt }) {
+export default function Camera({ left, right, top, bottom, near, far, lookAt }) {
   const set = useThree((state) => state.set);
-
+  const cameraPosition = useStore(state => state.cameraPosition);
   const camera = useMemo(() => new THREE.OrthographicCamera(left, right, top, bottom, near, far), [left, right, top, bottom, near, far]);
 
-  camera.position.set(...position);
-  camera.lookAt(...lookAt);
+  camera.position.set(680, 0, 680);
 
   useEffect(() => {
     set({ camera });
   }, [set, camera]);
+
+  useFrame(() => {
+    const SPEED = 0.1;
+
+    camera.position.lerp(cameraPosition, SPEED);
+
+    camera.lookAt(...lookAt);
+  });
 
   return null;
 }
@@ -25,6 +33,5 @@ Camera.propTypes = {
   bottom: PropTypes.number.isRequired,
   near: PropTypes.number.isRequired,
   far: PropTypes.number.isRequired,
-  position: PropTypes.array.isRequired,
   lookAt: PropTypes.array.isRequired,
 };

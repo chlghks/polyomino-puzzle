@@ -1,6 +1,6 @@
 const createStageSlice = (set, get) => ({
-  stage: 1,
-  stateGame: () => {
+  stage: null,
+  startGame: () => {
     set(() => ({ stage: 1 }));
   },
   increaseStage: () => {

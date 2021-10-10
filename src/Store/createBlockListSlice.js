@@ -1,15 +1,5 @@
-import {
-  DOMINO,
-  TROMINO_I,
-  TROMINO_L,
-  TETROMINO_I,
-  TETROMINO_T,
-} from "../constants/blockTypes";
-
-const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
-
 const createBlockListSlice = (set, get) => ({
-  blockList: mockBlockList,
+  blockList: null,
   setBlockList: (value) => {
     set(() => ({ blockList: value }));
   },
