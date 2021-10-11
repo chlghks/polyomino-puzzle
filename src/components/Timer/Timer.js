@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
+import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
-import fontJson from "../../font/helvetiker_regular.typeface.json";
 
 export default function Timer() {
-  const font = new THREE.FontLoader().parse(fontJson);
-  const [timeLimit, setTimeLimit] = useState(1);
+  const [timeLimit, setTimeLimit] = useState(61);
   const timer = useRef();
+
   const TIMEOUT_MESSAGE = "Game over";
+  const START_MESSAGE = "Start";
   const NUMBER = "number";
   const DELAY = 1000;
 
@@ -32,26 +32,28 @@ export default function Timer() {
 
   useFrame(() => {
     timer.current.geometry.center();
+
+    if (timeLimit !== TIMEOUT_MESSAGE) {
+      return;
+    }
+
+    const SPEED = 0.02;
+
+    timer.current.position.lerp({ x: 0, y: 70, z: 115 }, SPEED);
   });
 
-  const TextOptions = {
-    font,
-    size: 10,
-    height: 0,
-    bevelEnabled: true,
-    bevelThickness: 2,
-    bevelSize: 0.7,
-    bevelSegments: 10,
-  };
-
   return (
-    <mesh
+    <Text
       ref={timer}
+      text={String(timeLimit === 61 ? START_MESSAGE : timeLimit)}
       position={[0, 70, 20]}
       rotation={[-RIGHT_ANGLE / 2, 0, 0]}
-    >
-      <textGeometry args={[String(timeLimit === 61 ? 60 : timeLimit), TextOptions]} />
-      <meshNormalMaterial />
-    </mesh>
+      size={10}
+      height={0}
+      bevelEnabled={true}
+      bevelThickness={2}
+      bevelSize={0.7}
+      bevelSegments={10}
+    />
   );
 };
