@@ -3,6 +3,7 @@ import Arrow from "../Arrow/Arrow";
 import BlockContainer from "../BlockContainer/BlockContainer";
 
 import useStore from "../../Store/useStore";
+import GameHeader from "../GameHeader/GameHeader";
 import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
@@ -59,6 +60,7 @@ export default function Game() {
             count={COUNT}
           />
           <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
+            <GameHeader />
             <Arrow />
             <BlockContainer
               edgeLength={EDGE_LENGTH}
