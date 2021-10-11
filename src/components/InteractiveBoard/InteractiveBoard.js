@@ -126,6 +126,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
   const offsetHeight = (stage - 1) * blockHeight;
   const cubePositions = blocks[selectedBlock];
+  const board = scene.getObjectByName(BOARD);
 
   const isFullBlock = Object.values(boardStatus).every((value) => {
     return value;
@@ -170,7 +171,6 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       .multiplyScalar(edgeLength)
       .addScalar(5);
 
-    const board = scene.getObjectByName(BOARD);
     const boardDegree = convertDegree(board.rotation.y);
     const direction = boardDegree / 360 % 1;
 
@@ -212,7 +212,6 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       .multiplyScalar(edgeLength)
       .addScalar(5);
 
-    const board = scene.getObjectByName(BOARD);
     const boardDegree = convertDegree(board.rotation.y);
     const direction = boardDegree / 360 % 1;
 
@@ -226,9 +225,21 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       return;
     }
 
+    const blockGroup = board.getObjectByName(stage) || new THREE.Group();
+
+    const isNewBlockGroup = blockGroup.name === "";
+
+    if (isNewBlockGroup) {
+      blockGroup.name = stage;
+      board.add(blockGroup);
+    }
+
     const block = new THREE.Group().copy(previewBlock.current.children[0]);
 
-    block.children.forEach((cube) => {
+    block.children.forEach((cube, index) => {
+      const cubePosition = correctedCubePositions[index].toString();
+
+      cube.name = cubePosition;
       cube.material.color = new THREE.Color(BLUE);
     });
 
@@ -241,7 +252,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
     block.rotateY(-board.rotation.y);
     block.name = selectedBlock;
 
-    board.add(block);
+    blockGroup.add(block);
 
     unselectBlock();
     removeBlock(selectedBlock);
@@ -279,7 +290,6 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
     raycaster.setFromCamera(mouse, camera);
 
-    const board = scene.getObjectByName(BOARD);
     const intersects = raycaster.intersectObjects(board.children, true);
 
     if (!intersects.length) {
@@ -293,42 +303,21 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       return;
     }
 
+    const isPreviousBlock = returningBlock.parent.name !== stage;
+
+    if (isPreviousBlock) {
+      return;
+    }
+
     const returningBlockPositions = [];
 
     returningBlock.children.forEach((cube) => {
-      const { x, y, z } = cube.position;
+      const cubePosition = cube.name;
 
-      returningBlockPositions.push([x, y, z]);
+      returningBlockPositions.push(cubePosition);
     });
 
-    const boardDegree = convertDegree(board.rotation.y);
-    const direction = boardDegree / 360 % 1;
-
-    const offsetPosition = getPosition(returningBlock, size, offsetX, offsetY, camera);
-
-    offsetPosition
-      .divideScalar(edgeLength)
-      .floor()
-      .multiplyScalar(edgeLength)
-      .addScalar(5);
-
-    const correctedCubeLocations = returningBlockPositions.map((cubePosition) => {
-      const convertedCubePosition = {
-        x: cubePosition[0] + offsetPosition.x,
-        z: cubePosition[2] + offsetPosition.z
-      };
-
-      const correctedPosition = correctPosition(convertedCubePosition, direction);
-
-      const X = correctedPosition.x;
-      const Z = correctedPosition.z;
-
-      const location = [X, Z].toString();
-
-      return location;
-    });
-
-    updateBoardStatus(correctedCubeLocations, false);
+    updateBoardStatus(returningBlockPositions, false);
 
     addBlock(returningBlock.name);
 
