@@ -126,7 +126,6 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
   const offsetHeight = (stage - 1) * blockHeight;
   const cubePositions = blocks[selectedBlock];
-  const board = scene.getObjectByName(BOARD);
 
   const isFullBlock = Object.values(boardStatus).every((value) => {
     return value;
@@ -171,6 +170,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       .multiplyScalar(edgeLength)
       .addScalar(5);
 
+    const board = scene.getObjectByName(BOARD);
     const boardDegree = convertDegree(board.rotation.y);
     const direction = boardDegree / 360 % 1;
 
@@ -212,6 +212,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       .multiplyScalar(edgeLength)
       .addScalar(5);
 
+    const board = scene.getObjectByName(BOARD);
     const boardDegree = convertDegree(board.rotation.y);
     const direction = boardDegree / 360 % 1;
 
@@ -278,6 +279,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
     raycaster.setFromCamera(mouse, camera);
 
+    const board = scene.getObjectByName(BOARD);
     const intersects = raycaster.intersectObjects(board.children, true);
 
     if (!intersects.length) {

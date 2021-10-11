@@ -1,9 +1,10 @@
-import Board from "../Board/Board";
-import Arrow from "../Arrow/Arrow";
-import BlockContainer from "../BlockContainer/BlockContainer";
+import { useEffect } from "react";
 
 import useStore from "../../Store/useStore";
+import Board from "../Board/Board";
+import Arrow from "../Arrow/Arrow";
 import GameHeader from "../GameHeader/GameHeader";
+import BlockContainer from "../BlockContainer/BlockContainer";
 import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
@@ -40,8 +41,10 @@ export default function Game() {
       boardStatus[location] = false;
     }
   }
-
-  setBoardStatus(boardStatus);
+  useEffect(() => {
+    setBoardStatus(boardStatus);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
