@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import useStore from "../../Store/useStore";
 import Board from "../Board/Board";
@@ -24,7 +24,8 @@ export default function Game() {
   const OFFSET_LENGTH = EDGE_LENGTH / -2 * COUNT + 5;
 
   const blockPositions = [];
-  const boardStatus = {};
+
+  const boardStatus = useMemo(() => ({}), []);
 
   for (let i = 0; i < COUNT; i++) {
     for (let j = 0; j < COUNT; j++) {
@@ -41,14 +42,18 @@ export default function Game() {
       boardStatus[location] = false;
     }
   }
-  useEffect(() => {
-    setBoardStatus(boardStatus);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  useEffect(() => (
+    useStore.subscribe((stage) => {
+      if (stage === 1) {
+        setBoardStatus(boardStatus);
+      }
+    }, state => state.stage)
+  ), [boardStatus, setBoardStatus]);
 
   return (
     <>
-      {stage && (
+      {!!stage && (
         <>
           <Board
             blockPositions={blockPositions}

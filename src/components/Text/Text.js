@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import fontJson from "../../font/helvetiker_regular.typeface.json";
 
-const Text = forwardRef(({ text, position, rotation, size, height, curveSegments, bevelEnabled, bevelThickness, bevelSize, bevelOffset, bevelSegments }, ref) => {
+const Text = forwardRef(({ text, position, rotation, size, height, curveSegments, bevelEnabled, bevelThickness, bevelSize, bevelOffset, bevelSegments, onClick }, ref) => {
   const font = new THREE.FontLoader().parse(fontJson);
 
   const textOptions = {
@@ -24,6 +24,7 @@ const Text = forwardRef(({ text, position, rotation, size, height, curveSegments
       ref={ref}
       position={position}
       rotation={rotation}
+      onClick={onClick}
     >
       <textGeometry args={[text, textOptions]} />
       <meshNormalMaterial />
@@ -42,6 +43,7 @@ Text.propTypes = {
   bevelSize: PropTypes.number,
   bevelOffset: PropTypes.number,
   bevelSegments: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 Text.defaultProps = {
@@ -51,6 +53,7 @@ Text.defaultProps = {
   bevelSize: 8,
   bevelOffset: 0,
   bevelSegments: 3,
+  onClick: undefined,
 };
 
 export default Text;

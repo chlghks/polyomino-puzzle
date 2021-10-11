@@ -9,17 +9,14 @@ export default function Camera({ left, right, top, bottom, near, far, lookAt }) 
   const cameraPosition = useStore(state => state.cameraPosition);
   const camera = useMemo(() => new THREE.OrthographicCamera(left, right, top, bottom, near, far), [left, right, top, bottom, near, far]);
 
-  camera.position.set(680, 0, 680);
-
   useEffect(() => {
     set({ camera });
   }, [set, camera]);
 
   useFrame(() => {
-    const SPEED = 0.1;
+    const SPEED = 0.08;
 
     camera.position.lerp(cameraPosition, SPEED);
-
     camera.lookAt(...lookAt);
   });
 

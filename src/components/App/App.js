@@ -6,6 +6,7 @@ import Scene from "../Scene/Scene";
 import Light from "../Light/Light";
 import Main from "../Main/Main";
 import Game from "../Game/Game";
+import GameOver from "../GameOver/GameOver";
 import { BLACK } from "../../constants/colors";
 
 const GlobalStyle = createGlobalStyle`
@@ -39,6 +40,7 @@ export default function App() {
           <Light />
           <Main />
           <Game />
+          <GameOver />
         </Canvas>
       </CanvasBoard>
     </>

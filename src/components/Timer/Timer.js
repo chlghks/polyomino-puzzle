@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 
+import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
-import useStore from "../../Store/useStore";
+import { GAME_OVER } from "../../constants/cameraPositions";
 
 export default function Timer() {
+  const setCameraPosition = useStore(state => state.setCameraPosition);
   const increaseScore = useStore(state => state.increaseScore);
-  const [timeLimit, setTimeLimit] = useState(61);
+  const deleteBoard = useStore(state => state.deleteBoard);
+  const endGame = useStore(state => state.endGame);
+  const [timeLimit, setTimeLimit] = useState(1);
   const timer = useRef();
 
   const TIMEOUT_MESSAGE = "Game over";
@@ -18,7 +22,7 @@ export default function Timer() {
   useEffect(() => (
     useStore.subscribe((stage, previousStage) => {
       if (stage > previousStage) {
-        setTimeLimit(60);
+        setTimeLimit(1);
         increaseScore(timeLimit * 10);
       }
     }, state => state.stage)
@@ -31,6 +35,11 @@ export default function Timer() {
 
     if (timeLimit === 0) {
       setTimeLimit(TIMEOUT_MESSAGE);
+      setTimeout(() => {
+        endGame();
+        deleteBoard();
+        setCameraPosition(GAME_OVER);
+      }, 2500);
       return;
     }
 
@@ -39,7 +48,7 @@ export default function Timer() {
     }, DELAY);
 
     return () => clearInterval(countdown);
-  }, [timeLimit]);
+  }, [deleteBoard, endGame, setCameraPosition, timeLimit]);
 
   useFrame(() => {
     timer.current.geometry.center();
