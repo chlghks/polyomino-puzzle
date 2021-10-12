@@ -6,7 +6,7 @@ import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function Stage() {
-  const stage = useStore(state => state.stage);
+  const stage = useStore((state) => state.stage);
   const stageBox = useRef();
 
   const STAGE = "STAGE";

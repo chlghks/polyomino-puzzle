@@ -16,9 +16,9 @@ import Text from "../Text/Text";
 const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
 
 export default function Main() {
-  const setCameraPosition = useStore(state => state.setCameraPosition);
-  const setBlockList = useStore(state => state.setBlockList);
-  const startGame = useStore(state => state.startGame);
+  const setCameraPosition = useStore((state) => state.setCameraPosition);
+  const setBlockList = useStore((state) => state.setBlockList);
+  const startGame = useStore((state) => state.startGame);
   const textContainer = useRef();
 
   const PLAY = "Play";

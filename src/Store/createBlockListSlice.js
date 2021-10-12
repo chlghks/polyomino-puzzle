@@ -14,7 +14,7 @@ const createBlockListSlice = (set, get) => ({
   },
   removeBlock: (value) => {
     set((state) => {
-      const newState = state.blockList.filter(block => block !== value);
+      const newState = state.blockList.filter((block) => block !== value);
 
       return { blockList: newState };
     });

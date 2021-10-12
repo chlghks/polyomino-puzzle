@@ -6,7 +6,7 @@ import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function Score() {
-  const score = useStore(state => state.score);
+  const score = useStore((state) => state.score);
   const stageBox = useRef();
 
   const SCORE = "SCORE";

@@ -108,19 +108,19 @@ const validatePosition = (cubePositions, offsetPosition, direction, count, board
 };
 
 export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength, count }) {
-  const updateBoardStatus = useStore(state => state.updateBoardStatus);
-  const increaseStage = useStore(state => state.increaseStage);
-  const selectedBlock = useStore(state => state.selectedBlock);
-  const unselectBlock = useStore(state => state.unselectBlock);
-  const setBlockList = useStore(state => state.setBlockList);
-  const boardStatus = useStore(state => state.boardStatus);
-  const removeBlock = useStore(state => state.removeBlock);
-  const resetBoard = useStore(state => state.resetBoard);
-  const addBlock = useStore(state => state.addBlock);
-  const stage = useStore(state => state.stage);
-  const camera = useThree(state => state.camera);
-  const scene = useThree(state => state.scene);
-  const size = useThree(state => state.size);
+  const updateBoardStatus = useStore((state) => state.updateBoardStatus);
+  const increaseStage = useStore((state) => state.increaseStage);
+  const selectedBlock = useStore((state) => state.selectedBlock);
+  const unselectBlock = useStore((state) => state.unselectBlock);
+  const setBlockList = useStore((state) => state.setBlockList);
+  const boardStatus = useStore((state) => state.boardStatus);
+  const removeBlock = useStore((state) => state.removeBlock);
+  const resetBoard = useStore((state) => state.resetBoard);
+  const addBlock = useStore((state) => state.addBlock);
+  const stage = useStore((state) => state.stage);
+  const camera = useThree((state) => state.camera);
+  const scene = useThree((state) => state.scene);
+  const size = useThree((state) => state.size);
   const previewBlock = useRef(null);
   const selectArea = useRef(null);
 

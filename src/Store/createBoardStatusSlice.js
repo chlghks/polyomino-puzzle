@@ -23,7 +23,7 @@ const createBoardStatusSlice = (set, get) => ({
     set((state) => {
       const newBoardStatus = { ...state.boardStatus };
 
-      value.forEach(position => {
+      value.forEach((position) => {
         const location = position.toString();
 
         newBoardStatus[location] = boolean;

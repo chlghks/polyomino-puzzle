@@ -6,7 +6,7 @@ import BlockBox from "../BlockBox/BlockBox";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function BlockContainer({ edgeLength, height, boxColor, isOutLine, outLineColor }) {
-  const blockList = useStore(state => state.blockList);
+  const blockList = useStore((state) => state.blockList);
   const container = useRef();
   const blockOptions = [];
 

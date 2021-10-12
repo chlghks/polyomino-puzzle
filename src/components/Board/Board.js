@@ -7,8 +7,8 @@ import Cube from "../Cube/Cube";
 import { BOARD } from "../../constants/blockTypes";
 
 export default function Board({ blockPositions, blockHeight, boardHeight, edgeLength }) {
-  const rotatingAmount = useStore(state => state.angle);
-  const stage = useStore(state => state.stage);
+  const rotatingAmount = useStore((state) => state.angle);
+  const stage = useStore((state) => state.stage);
   const boxGroup = useRef();
   const offsetHeight = (stage - 1) * blockHeight;
 

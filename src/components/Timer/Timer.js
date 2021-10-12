@@ -7,10 +7,10 @@ import { RIGHT_ANGLE } from "../../constants/angles";
 import { GAME_OVER } from "../../constants/cameraPositions";
 
 export default function Timer() {
-  const setCameraPosition = useStore(state => state.setCameraPosition);
-  const increaseScore = useStore(state => state.increaseScore);
-  const deleteBoard = useStore(state => state.deleteBoard);
-  const endGame = useStore(state => state.endGame);
+  const setCameraPosition = useStore((state) => state.setCameraPosition);
+  const increaseScore = useStore((state) => state.increaseScore);
+  const deleteBoard = useStore((state) => state.deleteBoard);
+  const endGame = useStore((state) => state.endGame);
   const [timeLimit, setTimeLimit] = useState(1);
   const timer = useRef();
 
@@ -25,7 +25,7 @@ export default function Timer() {
         setTimeLimit(1);
         increaseScore(timeLimit * 10);
       }
-    }, state => state.stage)
+    }, (state) => state.stage)
   ), [increaseScore, timeLimit]);
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import useStore from "../../Store/useStore";
 
 export default function Camera({ left, right, top, bottom, near, far, lookAt }) {
   const set = useThree((state) => state.set);
-  const cameraPosition = useStore(state => state.cameraPosition);
+  const cameraPosition = useStore((state) => state.cameraPosition);
   const camera = useMemo(() => new THREE.OrthographicCamera(left, right, top, bottom, near, far), [left, right, top, bottom, near, far]);
 
   useEffect(() => {

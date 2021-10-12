@@ -14,8 +14,8 @@ import {
 } from "../../constants/colors";
 
 export default function Game() {
-  const setBoardStatus = useStore(state => state.setBoardStatus);
-  const stage = useStore(state => state.stage);
+  const setBoardStatus = useStore((state) => state.setBoardStatus);
+  const stage = useStore((state) => state.stage);
 
   const COUNT = 4;
   const EDGE_LENGTH = 10;
@@ -48,7 +48,7 @@ export default function Game() {
       if (stage === 1) {
         setBoardStatus(boardStatus);
       }
-    }, state => state.stage)
+    }, (state) => state.stage)
   ), [boardStatus, setBoardStatus]);
 
   return (

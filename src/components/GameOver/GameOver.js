@@ -19,11 +19,11 @@ import {
 const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
 
 export default function GameOver() {
-  const setCameraPosition = useStore(state => state.setCameraPosition);
-  const setBlockList = useStore(state => state.setBlockList);
-  const resetScore = useStore(state => state.resetScore);
-  const startGame = useStore(state => state.startGame);
-  const score = useStore(state => state.score);
+  const setCameraPosition = useStore((state) => state.setCameraPosition);
+  const setBlockList = useStore((state) => state.setBlockList);
+  const resetScore = useStore((state) => state.resetScore);
+  const startGame = useStore((state) => state.startGame);
+  const score = useStore((state) => state.score);
   const textContainer = useRef();
 
   const REGISTER_SCORE = "Register Score";
