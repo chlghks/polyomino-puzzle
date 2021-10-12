@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
+import RankingRegistration from "../RankingRegistration/RankingRegistration";
 import { RIGHT_ANGLE } from "../../constants/angles";
 import {
   GAME,
@@ -26,15 +27,12 @@ export default function GameOver() {
   const score = useStore((state) => state.score);
   const textContainer = useRef();
 
-  const REGISTER_SCORE = "Register Score";
   const TRY_AGAIN = "Try Again";
   const SCORE = "SCORE";
   const HOME = "Home";
 
   useEffect(() => {
-    textContainer.current.children.forEach((text) => {
-      text.geometry.center();
-    });
+    textContainer.current.children[1].geometry.center();
   }, [score]);
 
   const restartGame = () => {
@@ -57,7 +55,7 @@ export default function GameOver() {
       >
         <Text
           text={SCORE}
-          position={[0, 18, 0]}
+          position={[-16, 13, 16]}
           rotation={[0, RIGHT_ANGLE / 2, 0]}
           size={10}
           height={3}
@@ -76,20 +74,10 @@ export default function GameOver() {
           bevelSize={0.7}
           bevelSegments={10}
         />
-        <Text
-          text={REGISTER_SCORE}
-          position={[0, -25, 0]}
-          rotation={[0, RIGHT_ANGLE / 2, 0]}
-          size={5}
-          height={3}
-          bevelEnabled={true}
-          bevelThickness={2}
-          bevelSize={0.4}
-          bevelSegments={10}
-        />
+        <RankingRegistration />
         <Text
           text={TRY_AGAIN}
-          position={[15, -64, 45]}
+          position={[-25.5, -56, 25.5]}
           rotation={[0, RIGHT_ANGLE / 2, 0]}
           size={5}
           height={3}
@@ -101,7 +89,7 @@ export default function GameOver() {
         />
         <Text
           text={HOME}
-          position={[45, -64, 15]}
+          position={[8.5, -57, -8.5]}
           rotation={[0, RIGHT_ANGLE / 2, 0]}
           size={5}
           height={3}
