@@ -65,11 +65,12 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
         <meshBasicMaterial />
       </mesh>
       {blockOptions.map((option) => {
-        const { position, type } = option;
+        const { type, position } = option;
+        const key = type + String(position);
 
         return (
           <BlockBox
-            key={type}
+            key={key}
             type={type}
             length={BLOCK_BOX_LENGTH}
             position={position}
