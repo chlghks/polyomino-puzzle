@@ -294,6 +294,10 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
   };
 
   const returnBlock = ({ offsetX, offsetY }) => {
+    if (!board) {
+      return;
+    }
+
     if (selectedBlock !== null) {
       return;
     }
