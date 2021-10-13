@@ -6,11 +6,10 @@ import Text from "../Text/Text";
 import NicknameInput from "../NicknameInput/NicknameInput";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-export default function RankingRegistration() {
+export default function RankingRegistration({ position }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const score = useStore((state) => state.score);
-  const test = useRef();
-  const database = getDatabase();
+  const input = useRef();
 
   const REGISTER_SCORE = "Register Score";
   const REGISTER = "REGISTER";
@@ -27,8 +26,9 @@ export default function RankingRegistration() {
   };
 
   const registerRanking = async () => {
+    const database = getDatabase();
     const parent = child(ref(database), RANKING);
-    const nickname = test.current.value;
+    const nickname = input.current.value;
     const data = {
       nickname,
       score
@@ -39,17 +39,17 @@ export default function RankingRegistration() {
   };
 
   return (
-    <>
+    <group position={position}>
       {isRegistering ?
-        <group>
+        <>
           <NicknameInput
-            ref={test}
-            position={[0, -23, 0]}
+            ref={input}
+            position={[0, 5, 0]}
           />
           <Text
             text={REGISTER}
-            position={[-8.5, -38, 8.5]}
-            rotation={[0, RIGHT_ANGLE / 2, 0]}
+            position={[0, -7, 12]}
+            rotation={[0, RIGHT_ANGLE, 0]}
             size={3.8}
             height={3}
             bevelEnabled={true}
@@ -58,12 +58,12 @@ export default function RankingRegistration() {
             bevelSegments={10}
             onClick={registerRanking}
           />
-        </group>
+        </>
         :
         <Text
           text={REGISTER_SCORE}
-          position={[-16.5, -27, 16.5]}
-          rotation={[0, RIGHT_ANGLE / 2, 0]}
+          position={[0, 0, 23]}
+          rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
           height={3}
           bevelEnabled={true}
@@ -73,6 +73,6 @@ export default function RankingRegistration() {
           onClick={showNicknameInput}
         />
       }
-    </>
+    </group>
   );
 }

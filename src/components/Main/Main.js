@@ -40,12 +40,12 @@ export default function Main() {
   return (
     <group
       ref={textContainer}
-      position={[600, 0, 600]}
+      position={[600, 0, 0]}
     >
       <Text
         text={PLAY}
         position={[0, 40, 0]}
-        rotation={[RIGHT_ANGLE / 6, RIGHT_ANGLE / 2, RIGHT_ANGLE / 90 * -10]}
+        rotation={[0,RIGHT_ANGLE,0]}
         size={10}
         height={3}
         bevelEnabled={true}
@@ -56,7 +56,7 @@ export default function Main() {
       <Text
         text={RANKING}
         position={[0, 0, 0]}
-        rotation={[0, RIGHT_ANGLE / 2, 0]}
+        rotation={[0,RIGHT_ANGLE,0]}
         size={10}
         height={3}
         bevelEnabled={true}
@@ -66,7 +66,7 @@ export default function Main() {
       <Text
         text={SETTING}
         position={[0, -40, 0]}
-        rotation={[RIGHT_ANGLE / -6, RIGHT_ANGLE / 2, RIGHT_ANGLE / 90 * 10]}
+        rotation={[0,RIGHT_ANGLE,0]}
         size={10}
         height={3}
         bevelEnabled={true}

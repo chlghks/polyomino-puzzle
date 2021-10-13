@@ -51,12 +51,12 @@ export default function GameOver() {
     <>
       <group
         ref={textContainer}
-        position={[520, -155, 520]}
+        position={[580, 0, 400]}
       >
         <Text
           text={SCORE}
-          position={[-16, 13, 16]}
-          rotation={[0, RIGHT_ANGLE / 2, 0]}
+          position={[0, 30, 23]}
+          rotation={[0, RIGHT_ANGLE, 0]}
           size={10}
           height={3}
           bevelEnabled={true}
@@ -65,8 +65,8 @@ export default function GameOver() {
         />
         <Text
           text={String(score)}
-          position={[0, 0, 0]}
-          rotation={[0, RIGHT_ANGLE / 2, 0]}
+          position={[0, 15, 0]}
+          rotation={[0, RIGHT_ANGLE, 0]}
           size={15}
           height={3}
           bevelEnabled={true}
@@ -74,11 +74,11 @@ export default function GameOver() {
           bevelSize={0.7}
           bevelSegments={10}
         />
-        <RankingRegistration />
+        <RankingRegistration position={[0, -10, 0]} />
         <Text
           text={TRY_AGAIN}
-          position={[-25.5, -56, 25.5]}
-          rotation={[0, RIGHT_ANGLE / 2, 0]}
+          position={[0, -30, 40]}
+          rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
           height={3}
           bevelEnabled={true}
@@ -89,8 +89,8 @@ export default function GameOver() {
         />
         <Text
           text={HOME}
-          position={[8.5, -57, -8.5]}
-          rotation={[0, RIGHT_ANGLE / 2, 0]}
+          position={[0, -30, -15]}
+          rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
           height={3}
           bevelEnabled={true}

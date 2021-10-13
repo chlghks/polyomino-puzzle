@@ -11,7 +11,7 @@ export default function Timer() {
   const increaseScore = useStore((state) => state.increaseScore);
   const deleteBoard = useStore((state) => state.deleteBoard);
   const endGame = useStore((state) => state.endGame);
-  const [timeLimit, setTimeLimit] = useState(1);
+  const [timeLimit, setTimeLimit] = useState(61);
   const timer = useRef();
 
   const TIMEOUT_MESSAGE = "Game over";

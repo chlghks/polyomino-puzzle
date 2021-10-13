@@ -31,8 +31,8 @@ const NicknameInput = forwardRef(({ position }, ref) => {
     <group position={position}>
       <Line
         points={points}
-        position={[-17.5, 5, 17.5]}
-        rotation={[0, RIGHT_ANGLE / 2, 0]}
+        position={[0, 5, 25]}
+        rotation={[0, RIGHT_ANGLE, 0]}
         color={WHITE}
         lineWidth={4}
       />
@@ -40,7 +40,7 @@ const NicknameInput = forwardRef(({ position }, ref) => {
         ref={nickname}
         text={inputValue}
         position={[0, 0, 0]}
-        rotation={[RIGHT_ANGLE / 6, RIGHT_ANGLE / 2, RIGHT_ANGLE / 90 * -10]}
+        rotation={[0, RIGHT_ANGLE, 0]}
         size={4}
         height={3}
         bevelEnabled={true}
@@ -48,7 +48,7 @@ const NicknameInput = forwardRef(({ position }, ref) => {
         bevelSize={0.4}
         bevelSegments={10}
       />
-      <Html position={[-17.5, 5, 17.5]}>
+      <Html position={[0, 5, 25]}>
         <InvisibleInput
           ref={ref}
           onChange={renderInputValue}
