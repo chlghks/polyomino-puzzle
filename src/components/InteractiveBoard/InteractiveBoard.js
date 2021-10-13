@@ -47,11 +47,7 @@ const blocks = {
   tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
 };
 
-const getPosition = (selectedBlock, size, offsetX, offsetY, camera) => {
-  if (selectedBlock === null) {
-    return null;
-  }
-
+const getIntersectObject = (size, offsetX, offsetY, camera, targetObject) => {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
@@ -61,22 +57,30 @@ const getPosition = (selectedBlock, size, offsetX, offsetY, camera) => {
   mouse.set(mouseX, mouseY);
   raycaster.setFromCamera(mouse, camera);
 
-  const intersects = raycaster.intersectObjects(raycasterObject, false);
+  const intersects = raycaster.intersectObjects(targetObject, true);
 
   if (!intersects.length) {
     return null;
   }
 
-  const position = intersects[0].point;
-  const offsetPosition = intersects[0].face.normal;
+  return intersects[0];
+};
+
+const getPosition = (intersectObject, edgeLength) => {
+  const position = intersectObject.point;
+  const offsetPosition = intersectObject.face.normal;
 
   position
-    .add(offsetPosition);
+    .add(offsetPosition)
+    .divideScalar(edgeLength)
+    .floor()
+    .multiplyScalar(edgeLength)
+    .addScalar(5);
 
   return position;
 };
 
-const validatePosition = (cubePositions, offsetPosition, direction, count, boardStatus) => {
+const getValidatePosition = (cubePositions, offsetPosition, direction, count, boardStatus) => {
   const validPositions = [];
 
   cubePositions.forEach((cubePosition) => {
@@ -91,7 +95,9 @@ const validatePosition = (cubePositions, offsetPosition, direction, count, board
     const Z = correctedPosition.z;
     const BOARD_LIMIT = (count - 1) * 5;
 
-    if (Math.abs(X) > BOARD_LIMIT || Math.abs(Z) > BOARD_LIMIT) {
+    const isExceed = Math.abs(X) > BOARD_LIMIT || Math.abs(Z) > BOARD_LIMIT;
+
+    if (isExceed) {
       return;
     }
 
@@ -146,80 +152,92 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
   }, [isFullBlock, increaseStage, resetBoard, setBlockList]);
 
   useFrame((state) => {
+    if (selectedBlock === null) {
+      return null;
+    }
+
     const offsetX = 300 + state.mouse.x * 300;
     const offsetY = 350 - state.mouse.y * 350;
-    const offsetPosition = getPosition(selectedBlock, size, offsetX, offsetY, camera);
+    const intersectObject = getIntersectObject(size, offsetX, offsetY, camera, raycasterObject);
 
-    if (offsetPosition === null) {
+    if (intersectObject === null) {
       return;
     }
 
-    previewBlock.current.position.set(...Object.values(offsetPosition));
+    const position = intersectObject.point;
+    const offsetPosition = intersectObject.face.normal;
+
+    position
+      .add(offsetPosition);
+
+    previewBlock.current.position.set(...Object.values(position));
     previewBlock.current.position.y = offsetHeight + 15;
   });
 
   const setSelectedArea = ({ offsetX, offsetY, camera }) => {
-    const offsetPosition = getPosition(selectedBlock, size, offsetX, offsetY, camera);
-
-    if (offsetPosition === null) {
+    if (selectedBlock === null) {
       return;
     }
 
-    offsetPosition
-      .divideScalar(edgeLength)
-      .floor()
-      .multiplyScalar(edgeLength)
-      .addScalar(5);
+    const intersectObject = getIntersectObject(size, offsetX, offsetY, camera, raycasterObject);
 
-    const boardDegree = convertDegree(board.rotation.y);
+    if (intersectObject === null) {
+      return;
+    }
+
+    const offsetPosition = getPosition(intersectObject, edgeLength);
+
+    const boardRadian = board.rotation.y;
+    const boardDegree = convertDegree(boardRadian);
     const direction = boardDegree / 360 % 1;
 
-    const correctedCubePositions = validatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
+    const validCubePositions = getValidatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
 
-    const isInValid = correctedCubePositions.length !== cubePositions.length;
+    const isValid = validCubePositions.length === cubePositions.length;
 
-    const color = new THREE.Color(isInValid ? BLACK : RED);
+    const color = new THREE.Color(isValid ? RED : BLACK);
 
     selectArea.current.children.forEach((area, index) => {
-      if (!correctedCubePositions[index]) {
+      if (!validCubePositions[index]) {
         area.visible = false;
 
         return;
       }
 
-      area.position.x = correctedCubePositions[index][0];
-      area.position.z = correctedCubePositions[index][1];
+      area.position.x = validCubePositions[index][0];
+      area.position.z = validCubePositions[index][1];
       area.material.color = color;
       area.visible = true;
     });
 
-    selectArea.current.rotation.y = board.rotation.y;
+    selectArea.current.rotation.y = boardRadian;
 
     selectArea.current.position
       .setY(boardHeight / 2 + 0.1);;
   };
 
   const createBlock = ({ offsetX, offsetY, camera }) => {
-    const offsetPosition = getPosition(selectedBlock, size, offsetX, offsetY, camera);
-
-    if (offsetPosition === null) {
+    if (selectedBlock === null) {
       return;
     }
 
-    offsetPosition
-      .divideScalar(edgeLength)
-      .floor()
-      .multiplyScalar(edgeLength)
-      .addScalar(5);
+    const intersectObject = getIntersectObject(size, offsetX, offsetY, camera, raycasterObject);
 
-    const boardDegree = convertDegree(board.rotation.y);
+    if (intersectObject === null) {
+      return;
+    }
+
+    const offsetPosition = getPosition(intersectObject, edgeLength);
+
+    const boardRadian = board.rotation.y;
+    const boardDegree = convertDegree(boardRadian);
     const direction = boardDegree / 360 % 1;
 
-    const correctedCubePositions = validatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
+    const validCubePositions = getValidatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
 
-    const isInValid = correctedCubePositions.length !== cubePositions.length;
+    const isValid = validCubePositions.length === cubePositions.length;
 
-    if (isInValid) {
+    if (!isValid) {
       unselectBlock();
 
       return;
@@ -237,9 +255,9 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
     const block = new THREE.Group().copy(previewBlock.current.children[0]);
 
     block.children.forEach((cube, index) => {
-      const cubePosition = correctedCubePositions[index].toString();
+      const cubeLocation = validCubePositions[index].toString();
 
-      cube.name = cubePosition;
+      cube.name = cubeLocation;
       cube.material.color = new THREE.Color(BLUE);
     });
 
@@ -249,14 +267,14 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       .copy(correctedPosition)
       .setY(offsetHeight + blockHeight / 2 + boardHeight / 2);
 
-    block.rotateY(-board.rotation.y);
+    block.rotateY(-boardRadian);
     block.name = selectedBlock;
 
     blockGroup.add(block);
 
     unselectBlock();
     removeBlock(selectedBlock);
-    updateBoardStatus(correctedCubePositions, true);
+    updateBoardStatus(validCubePositions, true);
   };
 
   const showSelectedArea = () => {
@@ -280,23 +298,13 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       return;
     }
 
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
+    const intersectObject = getIntersectObject(size, offsetX, offsetY, camera, board.children);
 
-    const { width: canvasWidth, height: canvasHeight } = size;
-    const [mouseX, mouseY] = [(offsetX / canvasWidth) * 2 - 1, -(offsetY / canvasHeight) * 2 + 1];
-
-    mouse.set(mouseX, mouseY);
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(board.children, true);
-
-    if (!intersects.length) {
+    if (intersectObject === null) {
       return;
     }
 
-    const returningBlock = intersects[0].object.parent;
+    const returningBlock = intersectObject.object.parent;
     const isBoard = returningBlock.name === BOARD;
 
     if (isBoard) {
