@@ -25,14 +25,15 @@ import {
   TROMINO_L,
 } from "../../constants/blockTypes";
 
-const geometry = new THREE.PlaneGeometry(130, 290);
+const geometry = new THREE.PlaneGeometry(300, 280);
 
 geometry.rotateX(-RIGHT_ANGLE);
 geometry.rotateY(RIGHT_ANGLE / 2);
 
 const material = new THREE.MeshBasicMaterial();
+const raycasterBoard = new THREE.Mesh(geometry, material);
 
-const raycasterObject = [new THREE.Mesh(geometry, material)];
+const raycasterObject = [raycasterBoard];
 
 const blocks = {
   domino: [[0, 0, 10], [0, 0, 0]],
@@ -151,13 +152,14 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
     setBlockList(mockBlockList);
   }, [isFullBlock, increaseStage, resetBoard, setBlockList]);
 
-  useFrame((state) => {
+  useFrame(({ mouse }) => {
     if (selectedBlock === null) {
       return null;
     }
 
-    const offsetX = 300 + state.mouse.x * 300;
-    const offsetY = 350 - state.mouse.y * 350;
+    const offsetX = (window.innerWidth / 2) + mouse.x * (window.innerWidth / 2);
+    const offsetY = (window.innerHeight / 2) - mouse.y * (window.innerHeight / 2);
+
     const intersectObject = getIntersectObject(size, offsetX, offsetY, camera, raycasterObject);
 
     if (intersectObject === null) {
@@ -339,7 +341,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
   return (
     <>
       <mesh
-        position={[0, 0, 0]}
+        position={[30, 0, -30]}
         rotation={[0, RIGHT_ANGLE / 2, 0]}
         onPointerUp={createBlock}
         onPointerOut={hideSelectedArea}
@@ -347,7 +349,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
         onPointerEnter={showSelectedArea}
         onPointerMove={setSelectedArea}
       >
-        <planeGeometry args={[edgeLength * 15, edgeLength * 15]} />
+        <planeGeometry args={[edgeLength * 15 * 1.4, edgeLength * 15]} />
         <meshBasicMaterial visible={false} />
       </mesh>
       {selectedBlock && (

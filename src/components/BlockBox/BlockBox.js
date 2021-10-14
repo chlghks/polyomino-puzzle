@@ -39,7 +39,7 @@ export default function BlockBox({ position, length, type, edgeLength, height, b
       <Block
         cubePositions={cubePositions}
         blockPosition={position}
-        rotation={[0, - RIGHT_ANGLE / 2, 0]}
+        rotation={[0, RIGHT_ANGLE * 4 - RIGHT_ANGLE / 3, 0]}
         edgeLength={edgeLength}
         height={height}
         boxColor={boxColor}

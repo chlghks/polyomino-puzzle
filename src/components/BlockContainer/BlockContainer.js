@@ -1,89 +1,168 @@
 import { useRef } from "react";
+import * as THREE from "three";
+import { Line } from "@react-three/drei";
 import PropTypes from "prop-types";
 
 import useStore from "../../Store/useStore";
-import BlockBox from "../BlockBox/BlockBox";
+import Block from "../Block/Block";
+import { WHITE } from "../../constants/colors";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
+const blocks = {
+  domino: [[0, 0, -5], [0, 0, 5]],
+  trominoI: [[0, 0, -10], [0, 0, 0], [0, 0, 10]],
+  trominoL: [[2.5, 0, 2.5], [2.5, 0, -7.5], [-7.5, 0, 2.5]],
+  tetrominoI: [[0, 0, -15], [0, 0, -5], [0, 0, 5], [0, 0, 15]],
+  tetrominoO: [[-5, 0, -5], [5, 0, -5], [5, 0, 5], [-5, 0, 5]],
+  tetrominoT: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 0]],
+  tetrominoJ: [[-12.5, 0, -2.5], [-2.5, 0, -2.5], [7.5, 0, -2.5], [7.5, 0, 7.5]],
+  tetrominoL: [[2.5, 0, -2.5], [-7.5, 0, -2.5], [12.5, 0, -2.5], [-7.5, 0, 7.5]],
+  tetrominoS: [[0, 0, -5], [10, 0, -5], [0, 0, 5], [-10, 0, 5]],
+  tetrominoZ: [[0, 0, -5], [-10, 0, -5], [0, 0, 5], [10, 0, 5]],
+};
+
 export default function BlockContainer({ edgeLength, height, boxColor, isOutLine, outLineColor }) {
+  const selectBlock = useStore((state) => state.selectBlock);
   const blockList = useStore((state) => state.blockList);
-  const container = useRef();
-  const blockOptions = [];
+  const blockContainer = useRef();
 
-  const INTERVAL = 40;
-  const LEFT_LIMIT = - INTERVAL;
-  const RIGHT_LIMIT = - INTERVAL * blockList.length + INTERVAL * 2;
-  const SCROLL_LENGTH = INTERVAL * blockList.length;
-  const SCROLL_BOARD_X = INTERVAL * blockList.length / 2 - 20;
-  const CONTAINER_Y = -15;
-  const CONTAINER_Z = 70;
-  const BLOCK_BOX_LENGTH = 35;
+  const handleSelectBlock = (event) => {
+    event.stopPropagation();
 
-  for (let i = 0; i < blockList.length; i++) {
-    const X = INTERVAL * i;
+    const type = event.eventObject.name;
 
-    const option = {
-      position: [X, CONTAINER_Y, CONTAINER_Z],
-      type: blockList[i],
-    };
-
-    blockOptions.push(option);
-  }
-
-  const handleScroll = ({ wheelDeltaX }) => {
-    const { position } = container.current;
-    const SPEED = 2;
-
-    const scrollableToRight = wheelDeltaX < 0
-      && position.x > RIGHT_LIMIT;
-
-    if (scrollableToRight) {
-      position.x -= SPEED;
-
-      return;
-    }
-
-    const scrollableToLeft = wheelDeltaX > 0
-      && position.x + INTERVAL < 0;
-
-    if (scrollableToLeft) {
-
-      position.x += SPEED;
-    }
+    selectBlock(type);
   };
 
-  return (
-    <group
-      ref={container}
-      position={[LEFT_LIMIT, 0, 0]}>
-      <mesh
-        position={[SCROLL_BOARD_X, CONTAINER_Y, CONTAINER_Z]}
-        onWheel={handleScroll}
-        visible={false}
-      >
-        <planeGeometry args={[SCROLL_LENGTH, BLOCK_BOX_LENGTH]} />
-        <meshBasicMaterial />
-      </mesh>
-      {blockOptions.map((option) => {
-        const { type, position } = option;
-        const key = type + String(position);
+  let scroll = 0;
 
-        return (
-          <BlockBox
-            key={key}
-            type={type}
-            length={BLOCK_BOX_LENGTH}
-            position={position}
-            rotation={[0, RIGHT_ANGLE / 2, 0]}
-            edgeLength={edgeLength}
-            height={height}
-            boxColor={boxColor}
-            isOutLine={isOutLine}
-            outLineColor={outLineColor}
-          />
-        );
-      })}
-    </group>
+  const handleScroll = ({ wheelDeltaY }) => {
+    const length = blockContainer.current.children.length;
+    const SPEED = 0.05;
+
+    if (wheelDeltaY < 0) {
+      scroll += SPEED;
+    } else {
+      scroll -= SPEED;
+    }
+
+    if (scroll < 0) {
+      scroll = length;
+    }
+
+    if (scroll > length) {
+      scroll = 0;
+    }
+
+    blockContainer.current.children.forEach((row, index) => {
+      let offsetValue = index + scroll;
+
+      if (offsetValue < 0) {
+        offsetValue = scroll + (length - index);
+      }
+
+      if (offsetValue > length) {
+        offsetValue = scroll - (length - index);
+      }
+
+      let fraction = offsetValue / length;
+
+      if (fraction > 1) {
+        fraction = 1;
+      }
+
+      const currentPosition = pointsPath.getPoint(fraction);
+
+      row.children[0].position.copy(currentPosition);
+    });
+  };
+
+  const pointsPath = new THREE.CurvePath();
+  const lineLength = 45;
+
+  const firstCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(0, 0, lineLength),
+    new THREE.Vector3(0, lineLength, lineLength),
+    new THREE.Vector3(0, lineLength, 0),
+  );
+
+  const secondCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(0, lineLength, 0),
+    new THREE.Vector3(0, lineLength, -lineLength),
+    new THREE.Vector3(0, 0, -lineLength),
+  );
+
+  const thirdCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(0, 0, -lineLength),
+    new THREE.Vector3(0, -lineLength, -lineLength),
+    new THREE.Vector3(0, -lineLength, 0),
+  );
+
+  const fourthCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(0, -lineLength, 0),
+    new THREE.Vector3(0, -lineLength, lineLength),
+    new THREE.Vector3(0, 0, lineLength),
+  );
+
+  pointsPath.add(firstCurve);
+  pointsPath.add(secondCurve);
+  pointsPath.add(thirdCurve);
+  pointsPath.add(fourthCurve);
+
+  const points = pointsPath.curves.reduce((points, curve) => [...points, ...curve.getPoints(6)], []);
+
+  return (
+    <>
+      <group
+        position={[68, -5, -68]}
+        rotation={[0, RIGHT_ANGLE / 3, 0]}
+      >
+        <Line
+          points={points}
+          position={[0, 0, 0]}
+          rotation={[0, 0, 0]}
+          color={WHITE}
+          lineWidth={4}
+          visible={false}
+        />
+        <group ref={blockContainer}>
+          {blockList.map((type, index) => {
+            const cubePositions = blocks[type];
+            const fraction = index / blockList.length;
+            const currentPosition = pointsPath.getPoint(fraction);
+            const blockPosition = Object.values(currentPosition);
+
+            return (
+              <group
+                key={index}
+                name={type}
+                onPointerDown={handleSelectBlock}
+              >
+                <Block
+                  cubePositions={cubePositions}
+                  blockPosition={blockPosition}
+                  rotation={[0, RIGHT_ANGLE / -3, 0]}
+                  edgeLength={edgeLength}
+                  height={height}
+                  boxColor={boxColor}
+                  isOutLine={isOutLine}
+                  outLineColor={outLineColor}
+                />
+              </group>
+            );
+          })}
+        </group>
+        <mesh
+          position={[0, 0, 0]}
+          rotation={[0, RIGHT_ANGLE / 6, 0]}
+          onWheel={handleScroll}
+          visible={false}
+        >
+          <planeGeometry args={[50, 120]} />
+          <meshBasicMaterial />
+        </mesh>
+      </group>
+    </>
   );
 };
 

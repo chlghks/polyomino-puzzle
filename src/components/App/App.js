@@ -18,8 +18,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const CanvasBoard = styled.div`
-  width: 600px;
-  height: 700px;
+  width: 100vw;
+  height: 100vh;
   margin: 0 auto;
 `;
 
@@ -28,16 +28,9 @@ export default function App() {
     <>
       <GlobalStyle />
       <CanvasBoard>
-        <Canvas>
+        <Canvas orthographic={true}>
           <Scene backgroundColor={BLACK} />
-          <Camera
-            left={-65}
-            right={65}
-            top={65}
-            bottom={-65}
-            near={0}
-            far={255}
-          />
+          <Camera />
           <Light />
           <Main />
           <Ranking />

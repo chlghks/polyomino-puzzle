@@ -55,6 +55,10 @@ export default function Game() {
     <>
       {!!stage && (
         <>
+          <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
+            <GameHeader />
+            <Arrow />
+          </object3D>
           <Board
             blockPositions={blockPositions}
             blockHeight={BLOCK_HEIGHT}
@@ -67,17 +71,13 @@ export default function Game() {
             edgeLength={EDGE_LENGTH}
             count={COUNT}
           />
-          <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
-            <GameHeader />
-            <Arrow />
-            <BlockContainer
-              edgeLength={EDGE_LENGTH}
-              height={BLOCK_HEIGHT}
-              boxColor={WHITE}
-              isOutLine={true}
-              outLineColor={BLACK}
-            />
-          </object3D>
+          <BlockContainer
+            edgeLength={EDGE_LENGTH}
+            height={BLOCK_HEIGHT}
+            boxColor={WHITE}
+            isOutLine={true}
+            outLineColor={BLACK}
+          />
         </>
       )}
     </>

@@ -20,7 +20,7 @@ export default function Ranking() {
 
   return (
     <group
-      position={[580, 0, -400]}
+      position={[580, 0, -1000]}
     >
       <Text
         text={BACK}

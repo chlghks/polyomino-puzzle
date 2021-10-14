@@ -51,7 +51,7 @@ export default function GameOver() {
     <>
       <group
         ref={textContainer}
-        position={[580, 0, 400]}
+        position={[580, 0, 1000]}
       >
         <Text
           text={SCORE}

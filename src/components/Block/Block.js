@@ -5,7 +5,10 @@ import Cube from "../Cube/Cube";
 export default function Block({ cubePositions, blockPosition, rotation, edgeLength, height, boxColor, isOutLine, outLineColor }) {
 
   return (
-    <group position={blockPosition} rotation={rotation}>
+    <group
+      position={blockPosition}
+      rotation={rotation}
+    >
       {cubePositions.map((position) => (
         <Cube
           key={position.toString()}
