@@ -1,13 +1,9 @@
-const positions = {
-  main: { x: 680, y: 0, z: 0 },
-  game: { x: 80, y: 60, z: 80 },
-  gameOver: { x: 680, y: 0, z: 400 },
-};
+import { MAIN } from "../constants/cameraPositions";
 
 const createCameraPositionSlice = (set, get) => ({
-  cameraPosition: positions.main,
+  cameraPosition: MAIN,
   setCameraPosition: (value) => {
-    set(() => ({ cameraPosition: positions[value] }));
+    set(() => ({ cameraPosition: value }));
   },
 });
 

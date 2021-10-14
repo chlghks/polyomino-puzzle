@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { getDatabase, ref, child, get, push } from "@firebase/database";
+import { getDatabase, ref, child, push } from "@firebase/database";
+import PropTypes from "prop-types";
 
 import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import NicknameInput from "../NicknameInput/NicknameInput";
+import { PATH_RANKING } from "../../constants/path";
 import { RIGHT_ANGLE } from "../../constants/angles";
+import { TITLE_REGISTER } from "../../constants/titles";
+import { RANKING } from "../../constants/cameraPositions";
 
 export default function RankingRegistration({ position }) {
   const [isRegistering, setIsRegistering] = useState(false);
+  const setCameraPosition = useStore((state) => state.setCameraPosition);
   const score = useStore((state) => state.score);
-  const input = useRef();
+  const inputValue = useRef();
 
   const REGISTER_SCORE = "Register Score";
-  const REGISTER = "REGISTER";
-  const RANKING = "ranking";
 
   useEffect(() => (
     useStore.subscribe(() => {
@@ -27,15 +30,16 @@ export default function RankingRegistration({ position }) {
 
   const registerRanking = async () => {
     const database = getDatabase();
-    const parent = child(ref(database), RANKING);
-    const nickname = input.current.value;
+    const parent = child(ref(database), PATH_RANKING);
+    const nickname = inputValue.current.value;
     const data = {
       nickname,
       score
     };
 
     await push(parent, data);
-    await get(parent);
+
+    setCameraPosition(RANKING);
   };
 
   return (
@@ -43,11 +47,11 @@ export default function RankingRegistration({ position }) {
       {isRegistering ?
         <>
           <NicknameInput
-            ref={input}
+            ref={inputValue}
             position={[0, 5, 0]}
           />
           <Text
-            text={REGISTER}
+            text={TITLE_REGISTER}
             position={[0, -7, 12]}
             rotation={[0, RIGHT_ANGLE, 0]}
             size={3.8}
@@ -76,3 +80,7 @@ export default function RankingRegistration({ position }) {
     </group>
   );
 }
+
+RankingRegistration.propTypes ={
+  position: PropTypes.array.isRequired,
+};

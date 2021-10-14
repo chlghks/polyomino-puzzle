@@ -5,8 +5,10 @@ import Camera from "../Camera/Camera";
 import Scene from "../Scene/Scene";
 import Light from "../Light/Light";
 import Main from "../Main/Main";
+import Ranking from "../Ranking/Ranking";
 import Game from "../Game/Game";
 import GameOver from "../GameOver/GameOver";
+
 import { BLACK } from "../../constants/colors";
 
 const GlobalStyle = createGlobalStyle`
@@ -35,10 +37,10 @@ export default function App() {
             bottom={-65}
             near={0}
             far={255}
-            lookAt={[0, 0, 0]}
           />
           <Light />
           <Main />
+          <Ranking />
           <Game />
           <GameOver />
         </Canvas>
