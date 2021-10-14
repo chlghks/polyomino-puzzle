@@ -29,9 +29,9 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
   const handleSelectBlock = (event) => {
     event.stopPropagation();
 
-    const type = event.eventObject.name;
+    const block = event.eventObject.userData;
 
-    selectBlock(type);
+    selectBlock(block);
   };
 
   let scroll = 0;
@@ -126,7 +126,9 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
           visible={false}
         />
         <group ref={blockContainer}>
-          {blockList.map((type, index) => {
+          {blockList.map((block, index) => {
+            const { type, direction } = block;
+            const rotationY = RIGHT_ANGLE / -3 - RIGHT_ANGLE * 4 * direction;
             const cubePositions = blocks[type];
             const fraction = index / blockList.length;
             const currentPosition = pointsPath.getPoint(fraction);
@@ -135,13 +137,13 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
             return (
               <group
                 key={index}
-                name={type}
+                userData={block}
                 onPointerDown={handleSelectBlock}
               >
                 <Block
                   cubePositions={cubePositions}
                   blockPosition={blockPosition}
-                  rotation={[0, RIGHT_ANGLE / -3, 0]}
+                  rotation={[0, rotationY, 0]}
                   edgeLength={edgeLength}
                   height={height}
                   boxColor={boxColor}

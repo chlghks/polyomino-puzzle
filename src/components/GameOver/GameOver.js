@@ -4,20 +4,13 @@ import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import RankingRegistration from "../RankingRegistration/RankingRegistration";
 import { RIGHT_ANGLE } from "../../constants/angles";
+
 import {
   GAME,
   MAIN,
 } from "../../constants/cameraPositions";
 
-import {
-  DOMINO,
-  TROMINO_I,
-  TROMINO_L,
-  TETROMINO_I,
-  TETROMINO_T,
-} from "../../constants/blockTypes";
-
-const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
+import getBlockList from "../../utils/getBlockList";
 
 export default function GameOver() {
   const setCameraPosition = useStore((state) => state.setCameraPosition);
@@ -36,9 +29,11 @@ export default function GameOver() {
   }, [score]);
 
   const restartGame = () => {
+    const blockList = getBlockList(1);
+
     startGame();
     resetScore();
-    setBlockList(mockBlockList);
+    setBlockList(blockList);
     setCameraPosition(GAME);
   };
 

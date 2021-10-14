@@ -20,6 +20,9 @@ const createAngleSlice = (set, get) => ({
       return { angle: convertedRadian };
     });
   },
+  resetAngle: () => {
+    set((state) => ({ angle: 0 }));
+  },
 });
 
 export default createAngleSlice;

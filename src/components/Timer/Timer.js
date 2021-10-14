@@ -10,6 +10,7 @@ export default function Timer() {
   const setCameraPosition = useStore((state) => state.setCameraPosition);
   const increaseScore = useStore((state) => state.increaseScore);
   const deleteBoard = useStore((state) => state.deleteBoard);
+  const resetAngle = useStore((state) => state.resetAngle);
   const endGame = useStore((state) => state.endGame);
   const [timeLimit, setTimeLimit] = useState(61);
   const timer = useRef();
@@ -38,6 +39,7 @@ export default function Timer() {
       setTimeout(() => {
         endGame();
         deleteBoard();
+        resetAngle();
         setCameraPosition(GAME_OVER);
       }, 2500);
       return;
@@ -48,7 +50,7 @@ export default function Timer() {
     }, DELAY);
 
     return () => clearInterval(countdown);
-  }, [deleteBoard, endGame, setCameraPosition, timeLimit]);
+  }, [deleteBoard, endGame, resetAngle, setCameraPosition, timeLimit]);
 
   useFrame(() => {
     timer.current.geometry.center();

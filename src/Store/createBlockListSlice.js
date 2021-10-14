@@ -14,7 +14,13 @@ const createBlockListSlice = (set, get) => ({
   },
   removeBlock: (value) => {
     set((state) => {
-      const newState = state.blockList.filter((block) => block !== value);
+      const newState = [...state.blockList];
+
+      const index = newState.findIndex((block) => {
+        return (block.type === value.type) && (block.direction === value.direction);
+      });
+
+      newState.splice(index, 1);
 
       return { blockList: newState };
     });

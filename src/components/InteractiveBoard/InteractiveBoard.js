@@ -17,13 +17,7 @@ import {
   RED
 } from "../../constants/colors";
 
-import {
-  DOMINO,
-  TETROMINO_I,
-  TETROMINO_T,
-  TROMINO_I,
-  TROMINO_L,
-} from "../../constants/blockTypes";
+import getBlockList from "../../utils/getBlockList";
 
 const geometry = new THREE.PlaneGeometry(300, 280);
 
@@ -131,8 +125,19 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
   const previewBlock = useRef(null);
   const selectArea = useRef(null);
 
+  const cubePositions = blocks[selectedBlock?.type]?.map((position) => {
+    const convertedPosition = {
+      x: position[0],
+      y: position[1],
+      z: position[2],
+    };
+
+    const { x, y, z } = correctPosition(convertedPosition, selectedBlock.direction);
+
+    return [x, y, z];
+  });
+
   const offsetHeight = (stage - 1) * blockHeight;
-  const cubePositions = blocks[selectedBlock];
   const board = scene.getObjectByName(BOARD);
 
   const isFullBlock = Object.values(boardStatus).every((value) => {
@@ -147,10 +152,10 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
     increaseStage();
     resetBoard();
 
-    const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
+    const blockList = getBlockList(stage + 1);
 
-    setBlockList(mockBlockList);
-  }, [isFullBlock, increaseStage, resetBoard, setBlockList]);
+    setBlockList(blockList);
+  }, [isFullBlock, increaseStage, resetBoard, setBlockList, stage]);
 
   useFrame(({ mouse }) => {
     if (selectedBlock === null) {
@@ -233,9 +238,9 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
     const boardRadian = board.rotation.y;
     const boardDegree = convertDegree(boardRadian);
-    const direction = boardDegree / 360 % 1;
+    const boardDirection = boardDegree / 360 % 1;
 
-    const validCubePositions = getValidatePosition(cubePositions, offsetPosition, direction, count, boardStatus);
+    const validCubePositions = getValidatePosition(cubePositions, offsetPosition, boardDirection, count, boardStatus);
 
     const isValid = validCubePositions.length === cubePositions.length;
 
@@ -263,14 +268,14 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       cube.material.color = new THREE.Color(BLUE);
     });
 
-    const correctedPosition = correctPosition(offsetPosition, direction);
+    const correctedPosition = correctPosition(offsetPosition, boardDirection);
 
     block.position
       .copy(correctedPosition)
       .setY(offsetHeight + blockHeight / 2 + boardHeight / 2);
 
     block.rotateY(-boardRadian);
-    block.name = selectedBlock;
+    block.userData = selectedBlock;
 
     blockGroup.add(block);
 
@@ -333,7 +338,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
     updateBoardStatus(returningBlockPositions, false);
 
-    addBlock(returningBlock.name);
+    addBlock(returningBlock.userData);
 
     returningBlock.removeFromParent();
   };

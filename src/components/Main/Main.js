@@ -15,15 +15,7 @@ import {
   TITLE_SETTING,
 } from "../../constants/titles";
 
-import {
-  DOMINO,
-  TROMINO_I,
-  TROMINO_L,
-  TETROMINO_I,
-  TETROMINO_T,
-} from "../../constants/blockTypes";
-
-const mockBlockList = [DOMINO, TROMINO_I, TROMINO_L, TETROMINO_I, TETROMINO_T];
+import getBlockList from "../../utils/getBlockList";
 
 export default function Main() {
   const setCameraPosition = useStore((state) => state.setCameraPosition);
@@ -38,8 +30,10 @@ export default function Main() {
   }, []);
 
   const setup = () => {
+    const blockList = getBlockList(1);
+
     setCameraPosition(GAME);
-    setBlockList(mockBlockList);
+    setBlockList(blockList);
     startGame();
   };
 
