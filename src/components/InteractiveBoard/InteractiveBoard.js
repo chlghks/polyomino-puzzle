@@ -13,7 +13,6 @@ import { BOARD } from "../../constants/blockTypes";
 
 import {
   BLACK,
-  BLUE,
   RED
 } from "../../constants/colors";
 
@@ -202,7 +201,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
     const isValid = validCubePositions.length === cubePositions.length;
 
-    const color = new THREE.Color(isValid ? RED : BLACK);
+    const color = new THREE.Color(isValid ? BLACK : RED);
 
     selectArea.current.children.forEach((area, index) => {
       if (!validCubePositions[index]) {
@@ -265,7 +264,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       const cubeLocation = validCubePositions[index].toString();
 
       cube.name = cubeLocation;
-      cube.material.color = new THREE.Color(BLUE);
+      cube.material.color = selectedBlock.color;
     });
 
     const correctedPosition = correctPosition(offsetPosition, boardDirection);
@@ -362,8 +361,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
           <SelectedArea
             ref={selectArea}
             edgeLength={edgeLength}
-            count={cubePositions.length}
-            color={RED}
+            count={cubePositions.length}x
           />
           <group ref={previewBlock}>
             <Block
@@ -372,8 +370,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
               rotation={[0, 0, 0]}
               edgeLength={edgeLength}
               height={blockHeight}
-              boxColor={RED}
-              isOutLine={false}
+              color={selectedBlock.color}
             />
           </group>
         </>

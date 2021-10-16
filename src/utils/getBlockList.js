@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 import {
   DOMINO,
   TROMINO_L,
@@ -41,8 +43,10 @@ const getBlockList = (stage) => {
 
   const blockList = blockTypeList.map((type) => {
     const direction = getRandomNumber(4) * 0.25;
+    const newRGB = `rgb(${getRandomNumber(255)}, ${getRandomNumber(255)}, ${getRandomNumber(255)})`;
+    const color = new THREE.Color(newRGB);
 
-    return { type, direction };
+    return { type, direction, color };
   });
 
   return blockList;

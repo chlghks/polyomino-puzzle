@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-const SelectedArea = forwardRef(({ edgeLength, count, color }, ref) => {
+const SelectedArea = forwardRef(({ edgeLength, count }, ref) => {
   return (
     <group
       ref={ref}
@@ -15,7 +15,7 @@ const SelectedArea = forwardRef(({ edgeLength, count, color }, ref) => {
           visible={false}
         >
           <planeGeometry args={[edgeLength, edgeLength]} />
-          <meshBasicMaterial color={color} />
+          <meshBasicMaterial transparent opacity={0.5} />
         </mesh>
       ))}
     </group>
@@ -25,7 +25,6 @@ const SelectedArea = forwardRef(({ edgeLength, count, color }, ref) => {
 SelectedArea.propTypes = {
   edgeLength: PropTypes.number.isRequired,
   count: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
 };
 
 export default SelectedArea;

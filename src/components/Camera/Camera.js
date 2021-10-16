@@ -5,9 +5,9 @@ import { GAME } from "../../constants/cameraPositions";
 
 const positions = {
   main: { x: 680, y: 0, z: 0 },
-  ranking: { x: 680, y: 0, z: -1000 },
-  game: { x: 110, y: 60, z: 50 },
-  gameOver: { x: 680, y: 0, z: 1000 },
+  ranking: { x: 680, y: 0, z: 1000 },
+  game: { x: 110, y: 75, z: 50 },
+  gameOver: { x: 680, y: 0, z: -1000 },
 };
 
 export default function Camera() {

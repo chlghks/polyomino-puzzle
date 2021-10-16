@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import Cube from "../Cube/Cube";
 
-export default function Block({ cubePositions, blockPosition, rotation, edgeLength, height, boxColor, isOutLine, outLineColor }) {
+export default function Block({ cubePositions, blockPosition, rotation, edgeLength, height, color }) {
 
   return (
     <group
@@ -15,9 +15,7 @@ export default function Block({ cubePositions, blockPosition, rotation, edgeLeng
           edgeLength={edgeLength}
           height={height}
           position={position}
-          boxColor={boxColor}
-          isOutLine={isOutLine}
-          outLineColor={outLineColor}
+          color={color}
         />
       ))}
     </group>
@@ -30,11 +28,5 @@ Block.propTypes = {
   rotation: PropTypes.array.isRequired,
   edgeLength: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  boxColor: PropTypes.string.isRequired,
-  isOutLine: PropTypes.bool.isRequired,
-  outLineColor: PropTypes.string,
-};
-
-Block.defaultProps = {
-  outLineColor: null,
+  color: PropTypes.objectOf(PropTypes.number).isRequired,
 };

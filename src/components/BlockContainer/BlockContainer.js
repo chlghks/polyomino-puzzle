@@ -1,11 +1,9 @@
 import { useRef } from "react";
 import * as THREE from "three";
-import { Line } from "@react-three/drei";
 import PropTypes from "prop-types";
 
 import useStore from "../../Store/useStore";
-import Block from "../Block/Block";
-import { WHITE } from "../../constants/colors";
+import BlockBox from "../BlockBox/BlockBox";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 const blocks = {
@@ -21,18 +19,9 @@ const blocks = {
   tetrominoZ: [[0, 0, -5], [-10, 0, -5], [0, 0, 5], [10, 0, 5]],
 };
 
-export default function BlockContainer({ edgeLength, height, boxColor, isOutLine, outLineColor }) {
-  const selectBlock = useStore((state) => state.selectBlock);
+export default function BlockContainer({ edgeLength, height }) {
   const blockList = useStore((state) => state.blockList);
   const blockContainer = useRef();
-
-  const handleSelectBlock = (event) => {
-    event.stopPropagation();
-
-    const block = event.eventObject.userData;
-
-    selectBlock(block);
-  };
 
   let scroll = 0;
 
@@ -109,51 +98,12 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
   pointsPath.add(thirdCurve);
   pointsPath.add(fourthCurve);
 
-  const points = pointsPath.curves.reduce((points, curve) => [...points, ...curve.getPoints(6)], []);
-
   return (
     <>
       <group
         position={[68, -5, -68]}
         rotation={[0, RIGHT_ANGLE / 3, 0]}
       >
-        <Line
-          points={points}
-          position={[0, 0, 0]}
-          rotation={[0, 0, 0]}
-          color={WHITE}
-          lineWidth={4}
-          visible={false}
-        />
-        <group ref={blockContainer}>
-          {blockList.map((block, index) => {
-            const { type, direction } = block;
-            const rotationY = RIGHT_ANGLE / -3 - RIGHT_ANGLE * 4 * direction;
-            const cubePositions = blocks[type];
-            const fraction = index / blockList.length;
-            const currentPosition = pointsPath.getPoint(fraction);
-            const blockPosition = Object.values(currentPosition);
-
-            return (
-              <group
-                key={index}
-                userData={block}
-                onPointerDown={handleSelectBlock}
-              >
-                <Block
-                  cubePositions={cubePositions}
-                  blockPosition={blockPosition}
-                  rotation={[0, rotationY, 0]}
-                  edgeLength={edgeLength}
-                  height={height}
-                  boxColor={boxColor}
-                  isOutLine={isOutLine}
-                  outLineColor={outLineColor}
-                />
-              </group>
-            );
-          })}
-        </group>
         <mesh
           position={[0, 0, 0]}
           rotation={[0, RIGHT_ANGLE / 6, 0]}
@@ -163,6 +113,29 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
           <planeGeometry args={[50, 120]} />
           <meshBasicMaterial />
         </mesh>
+        <group ref={blockContainer}>
+          {blockList.map((blockOption, index) => {
+            const { type, direction, color } = blockOption;
+            const rotationY = (RIGHT_ANGLE / -3) - (RIGHT_ANGLE * 4 * direction);
+            const cubePositions = blocks[type];
+            const fraction = index / blockList.length;
+            const currentPosition = pointsPath.getPoint(fraction);
+            const blockPosition = Object.values(currentPosition);
+
+            return (
+              <BlockBox
+                key={index}
+                cubePositions={cubePositions}
+                blockPosition={blockPosition}
+                blockOption={blockOption}
+                rotation={[0, rotationY, 0]}
+                edgeLength={edgeLength}
+                height={height}
+                color={color}
+              />
+            );
+          })}
+        </group>
       </group>
     </>
   );
@@ -171,7 +144,4 @@ export default function BlockContainer({ edgeLength, height, boxColor, isOutLine
 BlockContainer.propTypes = {
   edgeLength: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  boxColor: PropTypes.string.isRequired,
-  isOutLine: PropTypes.bool.isRequired,
-  outLineColor: PropTypes.string.isRequired,
 };

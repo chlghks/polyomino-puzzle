@@ -1,62 +1,63 @@
-import * as THREE from "three";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import useStore from "../../Store/useStore";
 import Block from "../Block/Block";
-import { RIGHT_ANGLE } from "../../constants/angles";
 
-const blocks = {
-  domino: [[0, 0, -5], [0, 0, 5]],
-  trominoI: [[0, 0, -10], [0, 0, 0], [0, 0, 10]],
-  trominoL: [[2.5, 0, 2.5], [2.5, 0, -7.5], [-7.5, 0, 2.5]],
-  tetrominoI: [[0, 0, -15], [0, 0, -5], [0, 0, 5], [0, 0, 15]],
-  tetrominoO: [[-5, 0, -5], [5, 0, -5], [5, 0, 5], [-5, 0, 5]],
-  tetrominoT: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 0]],
-  tetrominoJ: [[-12.5, 0, -2.5], [-2.5, 0, -2.5], [7.5, 0, -2.5], [7.5, 0, 7.5]],
-  tetrominoL: [[2.5, 0, -2.5], [-7.5, 0, -2.5], [12.5, 0, -2.5], [-7.5, 0, 7.5]],
-  tetrominoS: [[0, 0, -5], [10, 0, -5], [0, 0, 5], [-10, 0, 5]],
-  tetrominoZ: [[0, 0, -5], [-10, 0, -5], [0, 0, 5], [10, 0, 5]],
-};
-
-export default function BlockBox({ position, length, type, edgeLength, height, boxColor, isOutLine, outLineColor }) {
+export default function BlockBox({ blockOption, cubePositions, blockPosition, rotation, edgeLength, height, color }) {
   const selectBlock = useStore((state) => state.selectBlock);
-  const cubePositions = blocks[type];
+  const [hasSelected, setHasSelected] = useState(false);
+  const block = useRef();
+
+  useEffect(() => (
+    useStore.subscribe(() => {
+      if (!hasSelected) {
+        return;
+      }
+
+      block.current.visible = true;
+
+      setHasSelected(false);
+    }, (state) => state.selectedBlock)
+  ), [hasSelected]);
 
   const handleSelectBlock = (event) => {
     event.stopPropagation();
 
-    selectBlock(type);
+    block.current.visible = false;
+
+    setHasSelected(true);
+    selectBlock(blockOption);
   };
 
   return (
-    <group onPointerDown={handleSelectBlock}>
-      <mesh position={position}>
-        <lineSegments>
-          <edgesGeometry args={[new THREE.PlaneGeometry(length, length)]} />
-          <lineBasicMaterial />
-        </lineSegments>
-      </mesh>
+    <group
+      ref={block}
+      userData={blockOption}
+      onPointerDown={handleSelectBlock}
+    >
       <Block
         cubePositions={cubePositions}
-        blockPosition={position}
-        rotation={[0, RIGHT_ANGLE * 4 - RIGHT_ANGLE / 3, 0]}
+        blockPosition={blockPosition}
+        rotation={rotation}
         edgeLength={edgeLength}
         height={height}
-        boxColor={boxColor}
-        isOutLine={isOutLine}
-        outLineColor={outLineColor}
+        color={color}
       />
     </group>
   );
 }
 
 BlockBox.propTypes = {
-  position: PropTypes.array.isRequired,
-  length: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
+  blockOption: PropTypes.shape({
+    color: PropTypes.PropTypes.objectOf(PropTypes.number).isRequired,
+    direction: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
+  cubePositions: PropTypes.array.isRequired,
+  blockPosition: PropTypes.array.isRequired,
+  rotation: PropTypes.array.isRequired,
   edgeLength: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  boxColor: PropTypes.string.isRequired,
-  isOutLine: PropTypes.bool.isRequired,
-  outLineColor: PropTypes.string.isRequired,
+  color: PropTypes.objectOf(PropTypes.number).isRequired,
 };

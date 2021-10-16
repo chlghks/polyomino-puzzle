@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import PropTypes from "prop-types";
+import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
@@ -37,19 +38,26 @@ export default function Board({ blockPositions, blockHeight, boardHeight, edgeLe
     }
   });
 
+  const getColor = (cubeCount, index) => {
+    const colorA = new THREE.Color("white");
+    const colorB = new THREE.Color("white").addScalar(-0.15);
+
+    return Math.floor(index / Math.sqrt(cubeCount) + index) % 2 ? colorA : colorB;
+  };
+
   return (
     <>
       <group
         ref={boxGroup}
         name={BOARD}
       >
-        {blockPositions.map((position) => (
+        {blockPositions.map((position, index) => (
           <Cube
             key={position.toString()}
             edgeLength={edgeLength}
             name={BOARD}
             height={boardHeight}
-            isOutLine={true}
+            color={getColor(blockPositions.length, index)}
             position={position}
           />
         ))}

@@ -8,15 +8,10 @@ import BlockContainer from "../BlockContainer/BlockContainer";
 import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
-import {
-  BLACK,
-  WHITE,
-} from "../../constants/colors";
-
 export default function Game() {
   const setBoardStatus = useStore((state) => state.setBoardStatus);
   const stage = useStore((state) => state.stage);
-
+  const isPlaying = !!stage;
   const COUNT = 4;
   const EDGE_LENGTH = 10;
   const BOARD_HEIGHT = 2;
@@ -53,7 +48,7 @@ export default function Game() {
 
   return (
     <>
-      {!!stage && (
+      {!!isPlaying && (
         <>
           <object3D rotation={[0, RIGHT_ANGLE / 2, 0]}>
             <GameHeader />
@@ -74,9 +69,6 @@ export default function Game() {
           <BlockContainer
             edgeLength={EDGE_LENGTH}
             height={BLOCK_HEIGHT}
-            boxColor={WHITE}
-            isOutLine={true}
-            outLineColor={BLACK}
           />
         </>
       )}
