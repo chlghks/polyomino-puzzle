@@ -16,6 +16,11 @@ import {
   RED
 } from "../../constants/colors";
 
+import {
+  ADDING_BLOCK_SOUND,
+  REMOVING_BLOCK_SOUND,
+} from "../../constants/sounds";
+
 import getBlockList from "../../utils/getBlockList";
 
 const geometry = new THREE.PlaneGeometry(300, 280);
@@ -138,6 +143,8 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
   const offsetHeight = (stage - 1) * blockHeight;
   const board = scene.getObjectByName(BOARD);
+  const addingBlockSound = scene.getObjectByName(ADDING_BLOCK_SOUND);
+  const removingBlockSound = scene.getObjectByName(REMOVING_BLOCK_SOUND);
 
   const isFullBlock = Object.values(boardStatus).every((value) => {
     return value;
@@ -278,6 +285,8 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
 
     blockGroup.add(block);
 
+    addingBlockSound.play();
+
     unselectBlock();
     removeBlock(selectedBlock);
     updateBoardStatus(validCubePositions, true);
@@ -335,6 +344,8 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       returningBlockPositions.push(cubePosition);
     });
 
+    removingBlockSound.play();
+
     updateBoardStatus(returningBlockPositions, false);
 
     addBlock(returningBlock.userData);
@@ -361,7 +372,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
           <SelectedArea
             ref={selectArea}
             edgeLength={edgeLength}
-            count={cubePositions.length}x
+            count={cubePositions.length}
           />
           <group ref={previewBlock}>
             <Block

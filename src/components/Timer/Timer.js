@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
+import { TIMER_SOUND } from "../../constants/sounds";
 import { GAME_OVER } from "../../constants/cameraPositions";
 
 export default function Timer() {
@@ -12,8 +13,11 @@ export default function Timer() {
   const deleteBoard = useStore((state) => state.deleteBoard);
   const resetAngle = useStore((state) => state.resetAngle);
   const endGame = useStore((state) => state.endGame);
-  const [timeLimit, setTimeLimit] = useState(61);
+  const scene = useThree((state) => state.scene);
+  const [timeLimit, setTimeLimit] = useState(15);
   const timer = useRef();
+
+  const timerSound = scene.getObjectByName(TIMER_SOUND);
 
   const TIMEOUT_MESSAGE = "Game over";
   const START_MESSAGE = "Start";
@@ -23,20 +27,34 @@ export default function Timer() {
   useEffect(() => (
     useStore.subscribe((stage, previousStage) => {
       if (stage > previousStage) {
-        setTimeLimit(1);
+        timerSound.stop();
+
+        setTimeLimit(60);
         increaseScore(timeLimit * 10);
       }
     }, (state) => state.stage)
-  ), [increaseScore, timeLimit]);
+  ), [increaseScore, timeLimit, timerSound]);
 
   useEffect(() => {
     if (typeof timeLimit !== NUMBER) {
       return;
     }
 
+    if (timeLimit === 10) {
+      timerSound.play();
+    }
+
+    if (timeLimit === 3) {
+      timerSound.setPlaybackRate(2);
+    }
+
     if (timeLimit === 0) {
+      timerSound.stop();
+
       setTimeLimit(TIMEOUT_MESSAGE);
+
       setTimeout(() => {
+
         endGame();
         deleteBoard();
         resetAngle();
@@ -50,7 +68,7 @@ export default function Timer() {
     }, DELAY);
 
     return () => clearInterval(countdown);
-  }, [deleteBoard, endGame, resetAngle, setCameraPosition, timeLimit]);
+  }, [deleteBoard, endGame, resetAngle, setCameraPosition, timeLimit, timerSound]);
 
   useFrame(() => {
     timer.current.geometry.center();

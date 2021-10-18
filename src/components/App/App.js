@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 
 import Camera from "../Camera/Camera";
 import Scene from "../Scene/Scene";
+import Audio from "../Audio/Audio";
 import Light from "../Light/Light";
 import Main from "../Main/Main";
 import Ranking from "../Ranking/Ranking";
@@ -31,6 +32,7 @@ export default function App() {
         <Canvas orthographic={true}>
           <Scene backgroundColor={BLACK} />
           <Camera />
+          <Audio />
           <Light />
           <Main />
           <Ranking />
