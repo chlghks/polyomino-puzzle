@@ -27,7 +27,9 @@ export default function Timer() {
   useEffect(() => (
     useStore.subscribe((stage, previousStage) => {
       if (stage > previousStage) {
-        timerSound.stop();
+        if (timerSound.isPlaying) {
+          timerSound.stop();
+        }
 
         setTimeLimit(60);
         increaseScore(timeLimit * 10);
