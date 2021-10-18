@@ -14,7 +14,7 @@ export default function Timer() {
   const resetAngle = useStore((state) => state.resetAngle);
   const endGame = useStore((state) => state.endGame);
   const scene = useThree((state) => state.scene);
-  const [timeLimit, setTimeLimit] = useState(15);
+  const [timeLimit, setTimeLimit] = useState(61);
   const timer = useRef();
 
   const timerSound = scene.getObjectByName(TIMER_SOUND);
@@ -71,8 +71,6 @@ export default function Timer() {
   }, [deleteBoard, endGame, resetAngle, setCameraPosition, timeLimit, timerSound]);
 
   useFrame(() => {
-    timer.current.geometry.center();
-
     if (timeLimit !== TIMEOUT_MESSAGE) {
       return;
     }

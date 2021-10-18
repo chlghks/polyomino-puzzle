@@ -52,7 +52,7 @@ export default function RankingRegistration({ position }) {
           />
           <Text
             text={TITLE_REGISTER}
-            position={[0, -7, 12]}
+            position={[0, -7, 0]}
             rotation={[0, RIGHT_ANGLE, 0]}
             size={3.8}
             height={3}
@@ -66,7 +66,7 @@ export default function RankingRegistration({ position }) {
         :
         <Text
           text={REGISTER_SCORE}
-          position={[0, 0, 23]}
+          position={[0, 0, 0]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
           height={3}

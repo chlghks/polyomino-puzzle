@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import RankingRegistration from "../RankingRegistration/RankingRegistration";
@@ -18,15 +16,10 @@ export default function GameOver() {
   const resetScore = useStore((state) => state.resetScore);
   const startGame = useStore((state) => state.startGame);
   const score = useStore((state) => state.score);
-  const textContainer = useRef();
 
   const TRY_AGAIN = "Try Again";
   const SCORE = "SCORE";
   const HOME = "Home";
-
-  useEffect(() => {
-    textContainer.current.children[1].geometry.center();
-  }, [score]);
 
   const restartGame = () => {
     const blockList = getBlockList(1);
@@ -44,13 +37,10 @@ export default function GameOver() {
 
   return (
     <>
-      <group
-        ref={textContainer}
-        position={[580, 0, -1000]}
-      >
+      <group position={[580, 0, -1000]}>
         <Text
           text={SCORE}
-          position={[0, 30, 23]}
+          position={[0, 35, 0]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={10}
           height={3}
@@ -72,7 +62,7 @@ export default function GameOver() {
         <RankingRegistration position={[0, -10, 0]} />
         <Text
           text={TRY_AGAIN}
-          position={[0, -30, 40]}
+          position={[0, -30, 25]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
           height={3}
@@ -84,7 +74,7 @@ export default function GameOver() {
         />
         <Text
           text={HOME}
-          position={[0, -30, -15]}
+          position={[0, -30, -25]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
           height={3}

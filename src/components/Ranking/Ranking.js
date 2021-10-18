@@ -24,7 +24,7 @@ export default function Ranking() {
     >
       <Text
         text={BACK}
-        position={[0, 55, -40]}
+        position={[0, 55, -45]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={3}
         height={3}
@@ -36,7 +36,7 @@ export default function Ranking() {
       />
       <Text
         text={TITLE_RANKING}
-        position={[0, 40, 23.5]}
+        position={[0, 45, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={8}
         height={3}
@@ -47,11 +47,11 @@ export default function Ranking() {
       />
       <NicknameInput
         ref={inputValue}
-        position={[0, 30, 20]}
+        position={[0, 30, 15]}
       />
       <Text
         text={SEARCH}
-        position={[0, 28, -20]}
+        position={[0, 30, -25]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={4.5}
         height={3}

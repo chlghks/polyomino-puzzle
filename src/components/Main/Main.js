@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
@@ -21,13 +19,6 @@ export default function Main() {
   const setCameraPosition = useStore((state) => state.setCameraPosition);
   const setBlockList = useStore((state) => state.setBlockList);
   const startGame = useStore((state) => state.startGame);
-  const textContainer = useRef();
-
-  useEffect(() => {
-    textContainer.current.children.forEach((text) => {
-      text.geometry.center();
-    });
-  }, []);
 
   const setup = () => {
     const blockList = getBlockList(1);
@@ -42,10 +33,7 @@ export default function Main() {
   };
 
   return (
-    <group
-      ref={textContainer}
-      position={[600, 0, 0]}
-    >
+    <group position={[600, 0, 0]}>
       <Text
         text={TITLE_PLAY}
         position={[0, 40, 0]}

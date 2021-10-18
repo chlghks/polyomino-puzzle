@@ -1,5 +1,4 @@
-import { forwardRef, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { forwardRef, useState } from "react";
 import { Html, Line } from "@react-three/drei";
 import styled from "styled-components";
 
@@ -15,17 +14,12 @@ const InvisibleInput = styled.input`
 
 const NicknameInput = forwardRef(({ position }, ref) => {
   const [inputValue, setInputValue] = useState("");
-  const nickname = useRef();
 
   const points = [[0, 0, 0], [0, -10, 0], [50, -10, 0], [50, 0, 0], [0, 0, 0]];
 
   const renderInputValue = ({ target }) => {
     setInputValue(target.value);
   };
-
-  useFrame(() => {
-    nickname.current.geometry.center();
-  });
 
   return (
     <group position={position}>
@@ -37,7 +31,6 @@ const NicknameInput = forwardRef(({ position }, ref) => {
         lineWidth={4}
       />
       <Text
-        ref={nickname}
         text={inputValue}
         position={[0, 0, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}

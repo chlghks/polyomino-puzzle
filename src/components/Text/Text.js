@@ -19,14 +19,16 @@ const Text = forwardRef(({ text, position, rotation, size, height, curveSegments
     bevelSegments,
   };
 
+  const geometry = new THREE.TextGeometry(text, textOptions).center();
+
   return (
     <mesh
       ref={ref}
       position={position}
       rotation={rotation}
       onClick={onClick}
+      geometry={geometry}
     >
-      <textGeometry args={[text, textOptions]} />
       <meshNormalMaterial />
     </mesh>
   );

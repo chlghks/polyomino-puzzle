@@ -12,7 +12,7 @@ export default function RankingTableHeader({ position }) {
     <group position={position}>
       <Text
         text={RANK}
-        position={[0, -10, 44.5]}
+        position={[0, -10, 35]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={4}
         height={3}
@@ -22,7 +22,7 @@ export default function RankingTableHeader({ position }) {
         bevelSegments={10} />
       <Text
         text={NICKNAME}
-        position={[0, -10, 17]}
+        position={[0, -10, 3]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={4}
         height={3}
@@ -32,7 +32,7 @@ export default function RankingTableHeader({ position }) {
         bevelSegments={10} />
       <Text
         text={SCORE}
-        position={[0, -10, -25]}
+        position={[0, -10, -30]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={4}
         height={3}

@@ -1,26 +1,14 @@
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
-
 import useStore from "../../Store/useStore";
 import Text from "../Text/Text";
 import { RIGHT_ANGLE } from "../../constants/angles";
 
 export default function Stage() {
   const stage = useStore((state) => state.stage);
-  const stageBox = useRef();
 
   const STAGE = "STAGE";
 
-  useFrame(() => {
-    stageBox.current.children[0].geometry.center();
-    stageBox.current.children[1].geometry.center();
-  });
-
   return (
-    <group
-      ref={stageBox}
-      position={[-30, 3, 0]}
-    >
+    <group position={[-30, 3, 0]}>
       <Text
         text={STAGE}
         position={[0, 70, 20]}

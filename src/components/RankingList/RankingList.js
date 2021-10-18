@@ -107,7 +107,6 @@ export default function RankingList({ position }) {
         {rankingData && rankingData.map((data, index) => {
           const { id, nickname, score } = data;
           const rank = index + 1;
-          const rankPosition = rank < 10 ? 40 : 42;
           const pathLength = lineLength * 2 + 10;
           const offsetValue = lineLength + index;
           const fraction = 1 / pathLength * offsetValue;
@@ -121,7 +120,7 @@ export default function RankingList({ position }) {
             >
               <Text
                 text={String(rank)}
-                position={[0, -10, rankPosition]}
+                position={[0, -10, 35]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
                 height={3}
@@ -131,7 +130,7 @@ export default function RankingList({ position }) {
                 bevelSegments={10} />
               <Text
                 text={nickname}
-                position={[0, -10, 17]}
+                position={[0, -10, 3]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
                 height={3}
@@ -141,7 +140,7 @@ export default function RankingList({ position }) {
                 bevelSegments={10} />
               <Text
                 text={String(score)}
-                position={[0, -10, -25]}
+                position={[0, -10, -30]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
                 height={3}

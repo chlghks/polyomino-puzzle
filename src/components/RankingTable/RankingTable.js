@@ -22,8 +22,8 @@ export default function RankingTable() {
         color={WHITE}
         lineWidth={4}
       />
-      <RankingTableHeader position={[0, 23, 0]} />
-      {isLooking && <RankingList position={[90, 22, 0]} />}
+      <RankingTableHeader position={[0, 25, 0]} />
+      {isLooking && <RankingList position={[95, 24, 0]} />}
     </>
   );
 }
