@@ -10,7 +10,7 @@ export default function Stage() {
   return (
     <group position={[-30, 3, 0]}>
       <Text
-        text={STAGE}
+        content={STAGE}
         position={[0, 70, 20]}
         rotation={[-RIGHT_ANGLE / 2, 0, 0]}
         size={3}
@@ -20,7 +20,7 @@ export default function Stage() {
         bevelSize={0.3}
       />
       <Text
-        text={String(stage)}
+        content={String(stage)}
         position={[0, 70, 32]}
         rotation={[-RIGHT_ANGLE / 2, 0, 0]}
         size={5}

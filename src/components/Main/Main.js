@@ -35,7 +35,7 @@ export default function Main() {
   return (
     <group position={[600, 0, 0]}>
       <Text
-        text={TITLE_PLAY}
+        content={TITLE_PLAY}
         position={[0, 40, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={10}
@@ -46,7 +46,7 @@ export default function Main() {
         onClick={setup}
       />
       <Text
-        text={TITLE_RANKING}
+        content={TITLE_RANKING}
         position={[0, 0, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={10}
@@ -57,7 +57,7 @@ export default function Main() {
         onClick={moveRanking}
       />
       <Text
-        text={TITLE_SETTING}
+        content={TITLE_SETTING}
         position={[0, -40, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={10}

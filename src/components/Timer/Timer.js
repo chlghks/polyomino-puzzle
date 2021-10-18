@@ -85,7 +85,7 @@ export default function Timer() {
   return (
     <Text
       ref={timer}
-      text={String(timeLimit === 61 ? START_MESSAGE : timeLimit)}
+      content={String(timeLimit === 61 ? START_MESSAGE : timeLimit)}
       position={[0, 80, 40]}
       rotation={[-RIGHT_ANGLE / 2, 0, 0]}
       size={10}

@@ -119,7 +119,7 @@ export default function RankingList({ position }) {
               position={position}
             >
               <Text
-                text={String(rank)}
+                content={String(rank)}
                 position={[0, -10, 35]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
@@ -129,7 +129,7 @@ export default function RankingList({ position }) {
                 bevelSize={0.2}
                 bevelSegments={10} />
               <Text
-                text={nickname}
+                content={nickname}
                 position={[0, -10, 3]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
@@ -139,7 +139,7 @@ export default function RankingList({ position }) {
                 bevelSize={0.2}
                 bevelSegments={10} />
               <Text
-                text={String(score)}
+                content={String(score)}
                 position={[0, -10, -30]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}

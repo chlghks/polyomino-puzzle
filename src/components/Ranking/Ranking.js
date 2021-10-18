@@ -23,7 +23,7 @@ export default function Ranking() {
       position={[580, 0, 1000]}
     >
       <Text
-        text={BACK}
+        content={BACK}
         position={[0, 55, -45]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={3}
@@ -35,7 +35,7 @@ export default function Ranking() {
         onClick={moveMain}
       />
       <Text
-        text={TITLE_RANKING}
+        content={TITLE_RANKING}
         position={[0, 45, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={8}
@@ -50,7 +50,7 @@ export default function Ranking() {
         position={[0, 30, 15]}
       />
       <Text
-        text={SEARCH}
+        content={SEARCH}
         position={[0, 30, -25]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={4.5}

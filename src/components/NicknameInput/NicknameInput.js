@@ -31,7 +31,7 @@ const NicknameInput = forwardRef(({ position }, ref) => {
         lineWidth={4}
       />
       <Text
-        text={inputValue}
+        content={inputValue}
         position={[0, 0, 0]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={4}

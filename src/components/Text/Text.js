@@ -4,8 +4,12 @@ import PropTypes from "prop-types";
 
 import fontJson from "../../font/helvetiker_regular.typeface.json";
 
-const Text = forwardRef(({ text, position, rotation, size, height, curveSegments, bevelEnabled, bevelThickness, bevelSize, bevelOffset, bevelSegments, onClick }, ref) => {
+const Text = forwardRef(({ content, position, rotation, size, height, curveSegments, bevelEnabled, bevelThickness, bevelSize, bevelOffset, bevelSegments, onClick, interactive }, ref) => {
   const font = new THREE.FontLoader().parse(fontJson);
+
+  const eventDetectorWidth = size * content.length;
+  const eventDetectorHeight = size * 1.5;
+  const hasEvent = !!onClick;
 
   const textOptions = {
     font,
@@ -19,18 +23,23 @@ const Text = forwardRef(({ text, position, rotation, size, height, curveSegments
     bevelSegments,
   };
 
-  const geometry = new THREE.TextGeometry(text, textOptions).center();
+  const geometry = new THREE.TextGeometry(content, textOptions).center();
 
   return (
-    <mesh
+    <group
       ref={ref}
       position={position}
-      rotation={rotation}
-      onClick={onClick}
-      geometry={geometry}
-    >
-      <meshNormalMaterial />
-    </mesh>
+      rotation={rotation}>
+      <mesh geometry={geometry}>
+        <meshNormalMaterial />
+      </mesh>
+      {hasEvent && (
+        <mesh onClick={onClick}>
+          <planeGeometry args={[eventDetectorWidth, eventDetectorHeight]} />
+          <meshBasicMaterial visible={false} />
+        </mesh>
+      )}
+    </group>
   );
 });
 

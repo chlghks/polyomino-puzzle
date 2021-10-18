@@ -10,7 +10,7 @@ export default function Score() {
   return (
     <group position={[30, 3, 0]}>
       <Text
-        text={SCORE}
+        content={SCORE}
         position={[0, 70, 20]}
         rotation={[-RIGHT_ANGLE / 2, 0, 0]}
         size={3}
@@ -20,7 +20,7 @@ export default function Score() {
         bevelSize={0.3}
       />
       <Text
-        text={String(score)}
+        content={String(score)}
         position={[0, 70, 32]}
         rotation={[-RIGHT_ANGLE / 2, 0, 0]}
         size={5}

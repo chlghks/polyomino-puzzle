@@ -39,7 +39,7 @@ export default function GameOver() {
     <>
       <group position={[580, 0, -1000]}>
         <Text
-          text={SCORE}
+          content={SCORE}
           position={[0, 35, 0]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={10}
@@ -49,7 +49,7 @@ export default function GameOver() {
           bevelSize={0.7}
         />
         <Text
-          text={String(score)}
+          content={String(score)}
           position={[0, 15, 0]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={15}
@@ -61,7 +61,7 @@ export default function GameOver() {
         />
         <RankingRegistration position={[0, -10, 0]} />
         <Text
-          text={TRY_AGAIN}
+          content={TRY_AGAIN}
           position={[0, -30, 25]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
@@ -73,7 +73,7 @@ export default function GameOver() {
           onClick={restartGame}
         />
         <Text
-          text={HOME}
+          content={HOME}
           position={[0, -30, -25]}
           rotation={[0, RIGHT_ANGLE, 0]}
           size={5}
