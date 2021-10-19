@@ -5,6 +5,7 @@ import { RIGHT_ANGLE } from "../../constants/angles";
 import {
   GAME,
   RANKING,
+  SETTING,
 } from "../../constants/cameraPositions";
 
 import {
@@ -30,6 +31,10 @@ export default function Main() {
 
   const moveRanking = () => {
     setCameraPosition(RANKING);
+  };
+
+  const moveSetting = () => {
+    setCameraPosition(SETTING);
   };
 
   return (
@@ -65,6 +70,7 @@ export default function Main() {
         bevelEnabled={true}
         bevelThickness={2}
         bevelSize={0.7}
+        onClick={moveSetting}
       />
     </group>
   );

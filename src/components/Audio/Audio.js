@@ -16,6 +16,7 @@ export default function Audio() {
   const removingBlockFile = "sounds/removeBlock.mp3";
   const addingBlockFile = "sounds/addBlock.mp3";
   const timerSoundFile = "sounds/timer.mp3";
+  const AUDIO = "audio";
 
   useEffect(() => {
     const soundListener = new THREE.AudioListener();
@@ -26,6 +27,11 @@ export default function Audio() {
 
     const loader = new THREE.AudioLoader();
 
+    const audio = new THREE.Group();
+
+    audio.name = AUDIO;
+    scene.add(audio);
+
     loader.load(
       backgroundSoundFile,
       (buffer) => {
@@ -33,7 +39,7 @@ export default function Audio() {
         backgroundSound.setLoop(true);
         backgroundSound.play();
 
-        scene.add(backgroundSound);
+        audio.add(backgroundSound);
       }
     );
 
@@ -47,7 +53,7 @@ export default function Audio() {
         timerSound.setBuffer(buffer);
         timerSound.setLoop(true);
 
-        scene.add(timerSound);
+        audio.add(timerSound);
       }
     );
 
@@ -60,7 +66,7 @@ export default function Audio() {
       (buffer) => {
         addingBlockSound.setBuffer(buffer);
 
-        scene.add(addingBlockSound);
+        audio.add(addingBlockSound);
       }
     );
 
@@ -73,7 +79,7 @@ export default function Audio() {
       (buffer) => {
         removingBlockSound.setBuffer(buffer);
 
-        scene.add(removingBlockSound);
+        audio.add(removingBlockSound);
       }
     );
   }, [camera, scene]);

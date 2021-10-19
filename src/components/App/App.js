@@ -7,6 +7,7 @@ import Audio from "../Audio/Audio";
 import Light from "../Light/Light";
 import Main from "../Main/Main";
 import Ranking from "../Ranking/Ranking";
+import Setting from "../Setting/Setting";
 import Game from "../Game/Game";
 import GameOver from "../GameOver/GameOver";
 
@@ -39,6 +40,7 @@ export default function App() {
           <Light />
           <Main />
           <Ranking />
+          <Setting />
           <Game />
           <GameOver />
         </Canvas>

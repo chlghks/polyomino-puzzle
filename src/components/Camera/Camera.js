@@ -10,6 +10,7 @@ import {
 const positions = {
   main: { x: 680, y: 0, z: 0 },
   ranking: { x: 680, y: 0, z: 1000 },
+  setting: { x: 680, y: 1000, z: 0 },
   game: { x: 110, y: 75, z: 50 },
   pause: { x: 110, y: -400, z: 50 },
   gameOver: { x: 680, y: 0, z: -1000 },
