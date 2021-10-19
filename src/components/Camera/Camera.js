@@ -1,12 +1,17 @@
 import { useFrame } from "@react-three/fiber";
 
 import useStore from "../../Store/useStore";
-import { GAME } from "../../constants/cameraPositions";
+
+import {
+  GAME,
+  PAUSE,
+} from "../../constants/cameraPositions";
 
 const positions = {
   main: { x: 680, y: 0, z: 0 },
   ranking: { x: 680, y: 0, z: 1000 },
   game: { x: 110, y: 75, z: 50 },
+  pause: { x: 110, y: -400, z: 50 },
   gameOver: { x: 680, y: 0, z: -1000 },
 };
 
@@ -15,7 +20,7 @@ export default function Camera() {
 
   const { x: targetX, y: targetY, z: targetZ } = positions[targetPosition];
 
-  const isGame = targetPosition === GAME;
+  const isGame = targetPosition === GAME || targetPosition === PAUSE;
 
   const lookingPoint = isGame ? [30, 0, -30] : [targetX - 100, targetY, targetZ];
 

@@ -29,7 +29,10 @@ export default function App() {
     <>
       <GlobalStyle />
       <CanvasBoard>
-        <Canvas orthographic={true}>
+        <Canvas
+          orthographic
+          camera={{ far: 300 }}
+        >
           <Scene backgroundColor={BLACK} />
           <Camera />
           <Audio />

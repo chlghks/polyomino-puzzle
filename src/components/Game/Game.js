@@ -3,6 +3,7 @@ import { useEffect, useMemo } from "react";
 import useStore from "../../Store/useStore";
 import Board from "../Board/Board";
 import Arrow from "../Arrow/Arrow";
+import Pause from "../Pause/Pause";
 import GameHeader from "../GameHeader/GameHeader";
 import BlockContainer from "../BlockContainer/BlockContainer";
 import InteractiveBoard from "../InteractiveBoard/InteractiveBoard";
@@ -70,6 +71,7 @@ export default function Game() {
             edgeLength={EDGE_LENGTH}
             height={BLOCK_HEIGHT}
           />
+          <Pause />
         </>
       )}
     </>

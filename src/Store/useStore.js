@@ -1,6 +1,7 @@
 import create from "zustand";
 
 import createAngleSlice from "./createAngleSlice";
+import createPauseSlice from "./createPauseSlice";
 import createScoreSlice from "./createScoreSlice";
 import createStageSlice from "./createStageSlice";
 import createBlockListSlice from "./createBlockListSlice";
@@ -10,6 +11,7 @@ import createCameraPositionSlice from "./createCameraPositionSlice";
 
 const useStore = create((set, get) => ({
   ...createAngleSlice(set, get),
+  ...createPauseSlice(set, get),
   ...createScoreSlice(set, get),
   ...createStageSlice(set, get),
   ...createBlockListSlice(set, get),

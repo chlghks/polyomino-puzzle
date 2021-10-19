@@ -13,12 +13,12 @@ export default function Timer() {
   const deleteBoard = useStore((state) => state.deleteBoard);
   const resetAngle = useStore((state) => state.resetAngle);
   const endGame = useStore((state) => state.endGame);
+  const isPause = useStore((state) => state.isPause);
   const scene = useThree((state) => state.scene);
   const [timeLimit, setTimeLimit] = useState(61);
   const timer = useRef();
 
   const timerSound = scene.getObjectByName(TIMER_SOUND);
-
   const TIMEOUT_MESSAGE = "Game over";
   const START_MESSAGE = "Start";
   const NUMBER = "number";
@@ -65,12 +65,17 @@ export default function Timer() {
       return;
     }
 
-    const countdown = setInterval(() => {
-      setTimeLimit(timeLimit - 1);
-    }, DELAY);
+    let countdown = 0;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!isPause) {
+      countdown = setInterval(() => {
+        setTimeLimit(timeLimit - 1);
+      }, DELAY);
+    }
 
     return () => clearInterval(countdown);
-  }, [deleteBoard, endGame, resetAngle, setCameraPosition, timeLimit, timerSound]);
+  }, [deleteBoard, endGame, isPause, resetAngle, setCameraPosition, timeLimit, timerSound]);
 
   useFrame(() => {
     if (timeLimit !== TIMEOUT_MESSAGE) {

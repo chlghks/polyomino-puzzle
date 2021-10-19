@@ -1,6 +1,7 @@
 import Stage from "../Stage/Stage";
 import Timer from "../Timer/Timer";
 import Score from "../Score/Score";
+import PauseButton from "../PauseButton/PauseButton";
 
 export default function GameHeader() {
   return (
@@ -8,6 +9,7 @@ export default function GameHeader() {
       <Stage />
       <Timer />
       <Score />
+      <PauseButton />
     </group>
   );
 }
