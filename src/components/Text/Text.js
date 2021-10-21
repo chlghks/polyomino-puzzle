@@ -11,6 +11,9 @@ const Text = forwardRef(({ content, position, rotation, size, height, curveSegme
   const eventDetectorHeight = size * 1.5;
   const hasEvent = !!onClick;
 
+  const AUTO = "auto";
+  const POINTER = "pointer";
+
   const textOptions = {
     font,
     size,
@@ -25,6 +28,10 @@ const Text = forwardRef(({ content, position, rotation, size, height, curveSegme
 
   const geometry = new THREE.TextGeometry(content, textOptions).center();
 
+  const ChangeCursor = (option) => {
+    document.body.style.cursor = option;
+  };
+
   return (
     <group
       ref={ref}
@@ -34,7 +41,12 @@ const Text = forwardRef(({ content, position, rotation, size, height, curveSegme
         <meshNormalMaterial />
       </mesh>
       {hasEvent && (
-        <mesh onClick={onClick}>
+        <mesh
+          onClick={onClick}
+          onPointerUp={() => ChangeCursor(AUTO)}
+          onPointerOver={() => ChangeCursor(POINTER)}
+          onPointerOut={() => ChangeCursor(AUTO)}
+        >
           <planeGeometry args={[eventDetectorWidth, eventDetectorHeight]} />
           <meshBasicMaterial visible={false} />
         </mesh>

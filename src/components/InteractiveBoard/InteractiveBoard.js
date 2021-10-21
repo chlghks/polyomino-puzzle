@@ -163,6 +163,13 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
     setBlockList(blockList);
   }, [isFullBlock, increaseStage, resetBoard, setBlockList, stage]);
 
+  const NONE = "none";
+  const AUTO = "auto";
+
+  useEffect(() => {
+    document.body.style.cursor = selectedBlock ? NONE : AUTO;
+  }, [selectedBlock]);
+
   useFrame(({ mouse }) => {
     if (selectedBlock === null) {
       return null;
