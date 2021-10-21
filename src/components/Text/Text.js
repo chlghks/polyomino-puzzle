@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import * as THREE from "three";
 import PropTypes from "prop-types";
 
-import fontJson from "../../font/helvetiker_regular.typeface.json";
+import fontJson from "../../font/KenPixel_Regular.json";
 
 const Text = forwardRef(({ content, position, rotation, size, height, curveSegments, bevelEnabled, bevelThickness, bevelSize, bevelOffset, bevelSegments, onClick, interactive }, ref) => {
   const font = new THREE.FontLoader().parse(fontJson);

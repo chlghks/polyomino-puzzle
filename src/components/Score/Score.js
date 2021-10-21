@@ -8,7 +8,7 @@ export default function Score() {
   const SCORE = "SCORE";
 
   return (
-    <group position={[30, 3, 0]}>
+    <group position={[40, 3, 0]}>
       <Text
         content={SCORE}
         position={[0, 70, 20]}

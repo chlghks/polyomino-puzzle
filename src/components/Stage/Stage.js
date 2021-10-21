@@ -8,7 +8,7 @@ export default function Stage() {
   const STAGE = "STAGE";
 
   return (
-    <group position={[-30, 3, 0]}>
+    <group position={[-40, 3, 0]}>
       <Text
         content={STAGE}
         position={[0, 70, 20]}
