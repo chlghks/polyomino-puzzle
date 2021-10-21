@@ -1,3 +1,4 @@
+const WELCOME = "welcome";
 const MAIN = "main";
 const RANKING = "ranking";
 const SETTING = "setting";
@@ -6,6 +7,7 @@ const PAUSE = "pause";
 const GAME_OVER = "gameOver";
 
 export {
+  WELCOME,
   MAIN,
   RANKING,
   SETTING,

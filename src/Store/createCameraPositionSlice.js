@@ -1,7 +1,7 @@
-import { MAIN } from "../constants/cameraPositions";
+import { WELCOME } from "../constants/cameraPositions";
 
 const createCameraPositionSlice = (set, get) => ({
-  cameraPosition: MAIN,
+  cameraPosition: WELCOME,
   setCameraPosition: (value) => {
     set(() => ({ cameraPosition: value }));
   },

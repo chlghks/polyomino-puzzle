@@ -3,9 +3,10 @@ import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 
 import {
+  TIMER_SOUND,
+  BACKGROUND_SOUND,
   ADDING_BLOCK_SOUND,
   REMOVING_BLOCK_SOUND,
-  TIMER_SOUND,
 } from "../../constants/sounds";
 
 export default function Audio() {
@@ -23,21 +24,22 @@ export default function Audio() {
 
     camera.add(soundListener);
 
-    const backgroundSound = new THREE.Audio(soundListener);
-
-    const loader = new THREE.AudioLoader();
-
     const audio = new THREE.Group();
 
     audio.name = AUDIO;
     scene.add(audio);
+
+    const backgroundSound = new THREE.Audio(soundListener);
+
+    backgroundSound.name = BACKGROUND_SOUND;
+
+    const loader = new THREE.AudioLoader();
 
     loader.load(
       backgroundSoundFile,
       (buffer) => {
         backgroundSound.setBuffer(buffer);
         backgroundSound.setLoop(true);
-        backgroundSound.play();
 
         audio.add(backgroundSound);
       }

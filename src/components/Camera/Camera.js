@@ -8,6 +8,7 @@ import {
 } from "../../constants/cameraPositions";
 
 const positions = {
+  welcome: { x: 1280, y: 0, z: 0 },
   main: { x: 680, y: 0, z: 0 },
   ranking: { x: 680, y: 0, z: 1000 },
   setting: { x: 680, y: 1000, z: 0 },
