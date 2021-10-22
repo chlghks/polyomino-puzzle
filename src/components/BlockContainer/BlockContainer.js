@@ -67,7 +67,7 @@ export default function BlockContainer({ edgeLength, height }) {
   };
 
   const pointsPath = new THREE.CurvePath();
-  const lineLength = 45;
+  const lineLength = 39;
 
   const firstCurve = new THREE.QuadraticBezierCurve3(
     new THREE.Vector3(0, 0, lineLength),
