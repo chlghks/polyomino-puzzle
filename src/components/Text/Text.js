@@ -28,7 +28,7 @@ const Text = forwardRef(({ content, position, rotation, size, height, curveSegme
 
   const geometry = new THREE.TextGeometry(content, textOptions).center();
 
-  const ChangeCursor = (option) => {
+  const changeCursor = (option) => {
     document.body.style.cursor = option;
   };
 
@@ -43,9 +43,9 @@ const Text = forwardRef(({ content, position, rotation, size, height, curveSegme
       {hasEvent && (
         <mesh
           onClick={onClick}
-          onPointerUp={() => ChangeCursor(AUTO)}
-          onPointerOver={() => ChangeCursor(POINTER)}
-          onPointerOut={() => ChangeCursor(AUTO)}
+          onPointerUp={() => changeCursor(AUTO)}
+          onPointerOver={() => changeCursor(POINTER)}
+          onPointerOut={() => changeCursor(AUTO)}
         >
           <planeGeometry args={[eventDetectorWidth, eventDetectorHeight]} />
           <meshBasicMaterial visible={false} />
