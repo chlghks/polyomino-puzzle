@@ -22,10 +22,10 @@ export default function Ranking() {
         position={[0, 55, -45]}
         rotation={[0, RIGHT_ANGLE, 0]}
         size={3}
-        height={3}
+        height={1}
         bevelEnabled={true}
         bevelThickness={2}
-        bevelSize={0.4}
+        bevelSize={0.2}
         bevelSegments={10}
         onClick={moveMain}
       />

@@ -7,7 +7,7 @@ import { WHITE } from "../../constants/colors";
 import { RIGHT_ANGLE } from "../../constants/angles";
 import { RANKING } from "../../constants/cameraPositions";
 
-const tablePoints = [[0, 0, 0], [0, -80, 0], [100, -80, 0], [100, 0, 0], [0, 0, 0]];
+const tablePoints = [[0, 0, 0], [0, -80, 0], [105, -80, 0], [105, 0, 0], [0, 0, 0]];
 
 export default function RankingTable() {
   const cameraPosition = useStore((state) => state.cameraPosition);
@@ -17,7 +17,7 @@ export default function RankingTable() {
     <>
       <Line
         points={tablePoints}
-        position={[0, 20, 50]}
+        position={[0, 20, 52.5]}
         rotation={[0, RIGHT_ANGLE, 0]}
         color={WHITE}
         lineWidth={4}

@@ -120,7 +120,7 @@ export default function RankingList({ position }) {
             >
               <Text
                 content={String(rank)}
-                position={[0, -10, 35]}
+                position={[0, -10, 40]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
                 height={3}
@@ -140,7 +140,7 @@ export default function RankingList({ position }) {
                 bevelSegments={10} />
               <Text
                 content={String(score)}
-                position={[0, -10, -30]}
+                position={[0, -10, -37]}
                 rotation={[0, RIGHT_ANGLE, 0]}
                 size={4}
                 height={3}
