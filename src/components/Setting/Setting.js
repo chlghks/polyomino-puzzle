@@ -15,6 +15,8 @@ export default function Setting() {
 
   const AUDIO = "audio";
   const HOME = "Home";
+  const AUTO = "auto";
+  const POINTER = "pointer";
 
   const x = -10, y = 2;
 
@@ -82,6 +84,10 @@ export default function Setting() {
     setIsMute(true);
   };
 
+  const changeCursor = (option) => {
+    document.body.style.cursor = option;
+  };
+
   const moveHome = () => {
     setCameraPosition(MAIN);
   };
@@ -120,14 +126,18 @@ export default function Setting() {
             <meshNormalMaterial />
           </mesh>
         )}
-        <mesh onClick={toggleAudio}>
+        <mesh
+          onClick={toggleAudio}
+          onPointerOver={() => changeCursor(POINTER)}
+          onPointerOut={() => changeCursor(AUTO)}
+        >
           <planeGeometry args={[25, 25]} />
           <meshBasicMaterial visible={false} />
         </mesh>
       </group>
       <Text
         content={HOME}
-        position={[0, -50, 0]}
+        position={[0, -40, 0]}
         rotation={[0, 0, 0]}
         size={7}
         height={1}
