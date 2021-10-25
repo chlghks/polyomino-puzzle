@@ -33,19 +33,6 @@ const raycasterBoard = new THREE.Mesh(geometry, material);
 
 const raycasterObject = [raycasterBoard];
 
-const blocks = {
-  domino: [[0, 0, 10], [0, 0, 0]],
-  trominoI: [[0, 0, -10], [0, 0, 0], [0, 0, 10]],
-  trominoL: [[0, 0, 0], [0, 0, -10], [-10, 0, 0]],
-  tetrominoI: [[0, 0, -10], [0, 0, 0], [0, 0, 10], [0, 0, 20]],
-  tetrominoO: [[0, 0, 0], [-10, 0, 0], [0, 0, -10], [-10, 0, -10]],
-  tetrominoT: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 0]],
-  tetrominoJ: [[0, 0, 0], [-10, 0, 0], [10, 0, 0], [10, 0, 10]],
-  tetrominoL: [[0, 0, 0], [-10, 0, 0], [10, 0, 0], [-10, 0, 10]],
-  tetrominoS: [[0, 0, 0], [10, 0, 0], [0, 0, 10], [-10, 0, 10]],
-  tetrominoZ: [[0, 0, 0], [-10, 0, 0], [0, 0, 10], [10, 0, 10]],
-};
-
 const getIntersectObject = (size, offsetX, offsetY, camera, targetObject) => {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
@@ -129,7 +116,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
   const previewBlock = useRef(null);
   const selectArea = useRef(null);
 
-  const cubePositions = blocks[selectedBlock?.type]?.map((position) => {
+  const cubePositions = selectedBlock?.cubePositions?.map((position) => {
     const convertedPosition = {
       x: position[0],
       y: position[1],
@@ -158,7 +145,7 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
     increaseStage();
     resetBoard();
 
-    const blockList = getBlockList(stage + 1);
+    const blockList = getBlockList(4);
 
     setBlockList(blockList);
   }, [isFullBlock, increaseStage, resetBoard, setBlockList, stage]);

@@ -22,7 +22,7 @@ export default function GameOver() {
   const HOME = "Home";
 
   const restartGame = () => {
-    const blockList = getBlockList(1);
+    const blockList = getBlockList(4);
 
     startGame();
     resetScore();

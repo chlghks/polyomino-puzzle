@@ -52,7 +52,7 @@ BlockBox.propTypes = {
   blockOption: PropTypes.shape({
     color: PropTypes.PropTypes.objectOf(PropTypes.number).isRequired,
     direction: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   }).isRequired,
   cubePositions: PropTypes.array.isRequired,
   blockPosition: PropTypes.array.isRequired,

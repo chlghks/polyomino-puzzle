@@ -17,7 +17,7 @@ const createBlockListSlice = (set, get) => ({
       const newState = [...state.blockList];
 
       const index = newState.findIndex((block) => {
-        return (block.type === value.type) && (block.direction === value.direction);
+        return (block.name === value.name) && (block.direction === value.direction);
       });
 
       newState.splice(index, 1);

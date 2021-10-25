@@ -22,7 +22,7 @@ export default function Main() {
   const startGame = useStore((state) => state.startGame);
 
   const setup = () => {
-    const blockList = getBlockList(1);
+    const blockList = getBlockList(4);
 
     setCameraPosition(GAME);
     setBlockList(blockList);
