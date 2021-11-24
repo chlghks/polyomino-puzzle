@@ -171,14 +171,21 @@ export default function InteractiveBoard({ boardHeight, blockHeight, edgeLength,
       return;
     }
 
+    const PREVIEW_HEIGHT = 15;
+    const SPEED = 0.2;
+
     const position = intersectObject.point;
     const offsetPosition = intersectObject.face.normal;
 
     position
-      .add(offsetPosition);
+      .add(offsetPosition)
+      .setY(PREVIEW_HEIGHT);
 
-    previewBlock.current.position.set(...Object.values(position));
-    previewBlock.current.position.y = offsetHeight + 15;
+    previewBlock.current.position
+      .setX(position.x)
+      .setZ(position.z);
+
+    previewBlock.current.position.lerp(position, SPEED);
   });
 
   const setSelectedArea = ({ offsetX, offsetY, camera }) => {
